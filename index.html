@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kushagra Kaushal - Portfolio Terminal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <span class="terminal-button close"></span>
+                <span class="terminal-button minimize"></span>
+                <span class="terminal-button maximize"></span>
+            </div>
+            <div class="terminal-title">kushagra@portfolio:~$</div>
+        </div>
+        
+        <div class="terminal-body">
+            <div class="terminal-output" id="output">
+                <div class="welcome-message">
+                    <pre class="ascii-art">
+██╗  ██╗██╗   ██╗███████╗██╗  ██╗ █████╗  ██████╗ ██████╗  █████╗ 
+██║ ██╔╝██║   ██║██╔════╝██║  ██║██╔══██╗██╔════╝ ██╔══██╗██╔══██╗
+█████╔╝ ██║   ██║███████╗███████║███████║██║  ███╗██████╔╝███████║
+██╔═██╗ ██║   ██║╚════██║██╔══██║██╔══██║██║   ██║██╔══██╗██╔══██║
+██║  ██╗╚██████╔╝███████║██║  ██║██║  ██║╚██████╔╝██║  ██║██║  ██║
+╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+                    </pre>
+                    <p class="intro-text">Welcome to my interactive portfolio terminal!</p>
+                    <p class="help-text">Type '<span class="command">help</span>' to see available commands</p>
+                    <br>
+                </div>
+            </div>
+            
+            <div class="terminal-input-line">
+                <span class="prompt">kushagra@portfolio:~$ </span>
+                <input type="text" id="commandInput" class="terminal-input" autocomplete="on" spellcheck="false">
+                <span class="cursor">█</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

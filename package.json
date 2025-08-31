@@ -1,0 +1,30 @@
+{
+  "name": "portfolio-terminal",
+  "version": "1.0.0",
+  "description": "Interactive terminal-style portfolio website",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "dev": "live-server --port=8000",
+    "build": "echo 'No build process needed - static files'",
+    "deploy": "echo 'Ready for deployment'"
+  },
+  "keywords": [
+    "portfolio",
+    "terminal",
+    "javascript",
+    "web",
+    "interactive"
+  ],
+  "author": "Kushagra Kaushal",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
