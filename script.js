@@ -624,10 +624,12 @@ class PortfolioTerminal {
                 root.style.setProperty('--accent-color', '#00ffff');
                 root.style.setProperty('--text-color', '#00ff00');
                 root.style.setProperty('--primary-color-rgb', '0, 255, 0');
-                root.style.setProperty('--bg-gradient-1', '#0a0a0a');
-                root.style.setProperty('--bg-gradient-2', '#1a1a1a');
+                root.style.setProperty('--bg-gradient-1', '#0D180A');
+                root.style.setProperty('--bg-gradient-2', '#0D180A');
                 // Force update body background
-                document.body.style.background = 'linear-gradient(45deg, #0a0a0a, #1a1a1a)';
+                document.body.style.background = 'linear-gradient(45deg, #0D180A, #0D180A)';
+                // Update terminal container background
+                document.querySelector('.terminal-container').style.background = 'rgba(13, 24, 10, 0.95)';
                 this.addToOutput('<div class="success">Theme changed to Matrix (Green)</div>');
                 break;
             case 'cyberpunk':
@@ -636,10 +638,12 @@ class PortfolioTerminal {
                 root.style.setProperty('--accent-color', '#00ffff');
                 root.style.setProperty('--text-color', '#ff0080');
                 root.style.setProperty('--primary-color-rgb', '255, 0, 128');
-                root.style.setProperty('--bg-gradient-1', '#0a0a1a');
-                root.style.setProperty('--bg-gradient-2', '#1a0a1a');
+                root.style.setProperty('--bg-gradient-1', '#0a0a14');
+                root.style.setProperty('--bg-gradient-2', '#0a0a14');
                 // Force update body background
-                document.body.style.background = 'linear-gradient(45deg, #0a0a1a, #1a0a1a)';
+                document.body.style.background = 'linear-gradient(45deg, #0a0a14, #0a0a14)';
+                // Update terminal container background
+                document.querySelector('.terminal-container').style.background = 'rgba(10, 10, 20, 0.95)';
                 this.addToOutput('<div class="success">Theme changed to Cyberpunk (Pink)</div>');
                 break;
             case 'retro':
@@ -648,10 +652,12 @@ class PortfolioTerminal {
                 root.style.setProperty('--accent-color', '#ffff00');
                 root.style.setProperty('--text-color', '#ffaa00');
                 root.style.setProperty('--primary-color-rgb', '255, 120, 0');
-                root.style.setProperty('--bg-gradient-1', '#1a1000');
-                root.style.setProperty('--bg-gradient-2', '#2a1a00');
+                root.style.setProperty('--bg-gradient-1', '#1a0f00');
+                root.style.setProperty('--bg-gradient-2', '#1a0f00');
                 // Force update body background
-                document.body.style.background = 'linear-gradient(45deg, #1a1000, #2a1a00)';
+                document.body.style.background = 'linear-gradient(45deg, #1a0f00, #1a0f00)';
+                // Update terminal container background
+                document.querySelector('.terminal-container').style.background = 'rgba(26, 15, 0, 0.95)';
                 this.addToOutput('<div class="success">Theme changed to Retro (Orange)</div>');
                 break;
             default:
