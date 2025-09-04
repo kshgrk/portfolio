@@ -496,6 +496,24 @@ a:hover {
     box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.3);
 }
 
+.print-btn {
+    background: rgba(0, 123, 255, 0.2);
+    color: #007bff;
+    border: 1px solid rgba(0, 123, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.print-btn:hover {
+    background: rgba(0, 123, 255, 0.3);
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
 .close-btn {
     background: rgba(255, 0, 0, 0.2);
     color: #ff6b6b;
@@ -556,7 +574,7 @@ a:hover {
         gap: 10px;
     }
     
-    .download-btn, .close-btn {
+    .download-btn, .print-btn, .close-btn {
         font-size: 14px;
         padding: 6px 12px;
     }

@@ -16,6 +16,7 @@ class PortfolioTerminal {
             resume: this.showResume.bind(this),
             github: this.openGithub.bind(this),
             linkedin: this.openLinkedIn.bind(this),
+            x: this.openX.bind(this),
             clear: this.clearTerminal.bind(this),
             date: this.showDate.bind(this),
             whoami: this.whoami.bind(this),
@@ -23,7 +24,8 @@ class PortfolioTerminal {
             cat: this.catFile.bind(this),
             pwd: this.showPwd.bind(this),
             echo: this.echo.bind(this),
-            theme: this.changeTheme.bind(this)
+            theme: this.changeTheme.bind(this),
+            kitty: this.showKitty.bind(this)
         };
         
         this.portfolioData = {
@@ -34,7 +36,8 @@ class PortfolioTerminal {
             location: "New Delhi, India",
             github: "https://github.com/kshgrk",
             linkedin: "https://linkedin.com/in/kshgrk",
-            website: "https://kushagrakaushal.dev"
+            website: "https://kushagrakaushal.dev",
+            x: "https://x.com/kshgrk"
         };
         
         this.init();
@@ -175,6 +178,8 @@ class PortfolioTerminal {
                 <div class="detail-line"><span class="success">resume</span> - Open resume PDF viewer in popup</div>
                 <div class="detail-line"><span class="success">github</span> - Open GitHub profile in new tab</div>
                 <div class="detail-line"><span class="success">linkedin</span> - Open LinkedIn profile in new tab</div>
+                <div class="detail-line"><span class="success">x</span> - Open X profile in new tab</div>
+                <div class="detail-line"><span class="success">kitty</span> - Display random ASCII art</div>
             </div>
             <br>
             <div class="help-section">
@@ -338,6 +343,9 @@ class PortfolioTerminal {
                 <div class="detail-line">
                     <span class="contact-label">GitHub:</span> <a href="${this.portfolioData.github}" target="_blank" class="contact-link">${this.portfolioData.github}</a>
                 </div>
+                <div class="detail-line">
+                    <span class="contact-label">X:</span> <a href="${this.portfolioData.x}" target="_blank" class="contact-link">${this.portfolioData.x}</a>
+                </div>
             </div>
             <br>
             <div class="success">Let's connect! I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology.</div>
@@ -364,7 +372,7 @@ class PortfolioTerminal {
         if (existingPopup) {
             existingPopup.remove();
         }
-        
+
         // Create popup overlay
         const overlay = document.createElement('div');
         overlay.className = 'pdf-popup';
@@ -373,41 +381,144 @@ class PortfolioTerminal {
                 <div class="pdf-header">
                     <h3>📄 Kushagra Kaushal - Resume</h3>
                     <div class="pdf-controls">
-                        <a href="Kushagra_Resume.pdf" download class="download-btn">⬇️ Download</a>
+                        <a href="resume.pdf" download class="download-btn">⬇️ Download</a>
+                        <button class="print-btn">🖨️ Print</button>
                         <button class="close-btn">✕</button>
                     </div>
                 </div>
                 <div class="pdf-viewer">
-                    <iframe src="Kushagra_Resume.pdf#toolbar=1&navpanes=1&scrollbar=1" 
-                            width="100%" 
-                            height="100%" 
-                            frameborder="0">
-                        <p>Your browser does not support PDFs. 
-                           <a href="Kushagra_Resume.pdf" target="_blank">Download the PDF</a>
-                        </p>
+                    <iframe src="resume.pdf#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit&pagemode=none"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            style="border: none; background: #f5f5f5;">
+                        <div style="padding: 20px; text-align: center; font-family: 'Times New Roman', Times, serif;">
+                            <h3>📄 PDF Viewer</h3>
+                            <p>Your browser doesn't support inline PDF viewing.</p>
+                            <p>Click the download button above or <a href="resume.pdf" target="_blank" style="color: #00ff00; text-decoration: none;">open the PDF directly</a></p>
+                            <p style="font-size: 14px; color: #888; margin-top: 10px;">
+                                For best viewing experience, ensure your browser has Times New Roman font installed.<br>
+                                The viewer automatically loads Google Fonts if the local font is unavailable.
+                            </p>
+                        </div>
                     </iframe>
                 </div>
             </div>
         `;
-        
+
         // Add event listeners
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 overlay.remove();
             }
         });
-        
+
         overlay.querySelector('.close-btn').addEventListener('click', () => {
             overlay.remove();
         });
-        
+
+        // Add print functionality
+        const printBtn = overlay.querySelector('.print-btn');
+        if (printBtn) {
+            printBtn.addEventListener('click', () => {
+                const iframe = overlay.querySelector('iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.print();
+                } else {
+                    // Fallback: open in new window for printing
+                    window.open('resume.pdf', '_blank');
+                }
+            });
+        }
+
+        // Enhance PDF viewer with better font support
+        this.enhancePDFViewer(overlay);
+
         // Add to page
         document.body.appendChild(overlay);
-        
+
         // Focus the input after a short delay
         setTimeout(() => {
             this.input.focus();
         }, 100);
+    }
+
+    enhancePDFViewer(overlay) {
+        const iframe = overlay.querySelector('iframe');
+
+        // Add CSS for better font rendering
+        const style = document.createElement('style');
+        style.textContent = `
+            @font-face {
+                font-family: 'Times New Roman';
+                src: local('Times New Roman'), local('Times'), local('serif');
+                font-display: swap;
+            }
+
+            .pdf-viewer iframe {
+                font-synthesis: none;
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                font-feature-settings: "liga" 1, "kern" 1;
+                font-variant-ligatures: common-ligatures;
+            }
+
+            /* Force font rendering for Times */
+            .pdf-viewer * {
+                font-family: 'Times New Roman', Times, serif !important;
+                font-synthesis: none !important;
+                text-rendering: optimizeLegibility !important;
+                -webkit-font-smoothing: antialiased !important;
+                -moz-osx-font-smoothing: grayscale !important;
+                font-feature-settings: "liga" 1, "kern" 1 !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add font loading detection
+        if ('fonts' in document) {
+            document.fonts.load('16px "Times New Roman"').then(() => {
+                console.log('Times New Roman font loaded successfully');
+            }).catch(() => {
+                console.warn('Times New Roman font not available, loading from Google Fonts');
+                // Load Times New Roman from Google Fonts as fallback
+                const googleFont = document.createElement('link');
+                googleFont.rel = 'stylesheet';
+                googleFont.href = 'https://fonts.googleapis.com/css2?family=Times+New+Roman:ital,wght@0,400;0,700;1,400;1,700&display=swap';
+                document.head.appendChild(googleFont);
+            });
+        }
+
+        // Add better iframe parameters for font rendering
+        if (iframe) {
+            iframe.onload = () => {
+                try {
+                    // Attempt to enhance the iframe content for better font rendering
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    if (iframeDoc) {
+                        const fontStyle = iframeDoc.createElement('style');
+                        fontStyle.textContent = `
+                            * {
+                                font-family: 'Times New Roman', Times, serif !important;
+                                font-synthesis: none !important;
+                                text-rendering: optimizeLegibility !important;
+                                -webkit-font-smoothing: antialiased !important;
+                                -moz-osx-font-smoothing: grayscale !important;
+                            }
+
+                            body {
+                                font-family: 'Times New Roman', Times, serif !important;
+                            }
+                        `;
+                        iframeDoc.head.appendChild(fontStyle);
+                    }
+                } catch (e) {
+                    // Cross-origin restrictions may prevent iframe manipulation
+                    console.log('Could not enhance iframe font rendering due to cross-origin restrictions');
+                }
+            };
+        }
     }
     
     openGithub() {
@@ -435,6 +546,19 @@ class PortfolioTerminal {
             window.open(this.portfolioData.linkedin, '_blank');
         }, 1000);
     }
+
+    openX() {
+        const xText = `
+            <div class="info">🐦 Opening X Profile...</div>
+            <div>Redirecting to: <a href="${this.portfolioData.x}" target="_blank">${this.portfolioData.x}</a></div>
+        `;
+        this.addToOutput(xText);
+
+        // Open X in new tab
+        setTimeout(() => {
+            window.open(this.portfolioData.x, '_blank');
+        }, 1000);
+    }
     
     showDate() {
         const now = new Date();
@@ -449,12 +573,12 @@ class PortfolioTerminal {
     listFiles() {
         const filesText = `
             <div class="info">Directory listing:</div>
-            <div>drwxr-xr-x  about.txt</div>
-            <div>drwxr-xr-x  skills.txt</div>
-            <div>drwxr-xr-x  projects.txt</div>
-            <div>drwxr-xr-x  experience.txt</div>
-            <div>drwxr-xr-x  education.txt</div>
-            <div>drwxr-xr-x  contact.txt</div>
+            <div>-rw-r--r--  about.txt</div>
+            <div>-rw-r--r--  skills.txt</div>
+            <div>-rw-r--r--  projects.txt</div>
+            <div>-rw-r--r--  experience.txt</div>
+            <div>-rw-r--r--  education.txt</div>
+            <div>-rw-r--r--  contact.txt</div>
             <div>-rw-r--r--  resume.pdf</div>
         `;
         this.addToOutput(filesText);
@@ -541,6 +665,52 @@ class PortfolioTerminal {
             default:
                 this.addToOutput('<div class="error">Theme not found. Available: matrix, cyberpunk, retro</div>');
         }
+    }
+
+    showKitty() {
+        // Fetch ASCII art collection
+        fetch('ascii_art_simple.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load ASCII art collection');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const pieces = data.pieces;
+                if (pieces.length === 0) {
+                    this.addToOutput('<div class="error">🐱 No ASCII art pieces found!</div>');
+                    return;
+                }
+
+                // Select random piece
+                const randomIndex = Math.floor(Math.random() * pieces.length);
+                const randomPiece = pieces[randomIndex];
+
+                // Decode base64
+                try {
+                    const decodedArt = atob(randomPiece.base64_encoded);
+
+                    // Display the ASCII art
+                    const artDisplay = `
+                        <div class="info">🐱 Random ASCII Art (Piece #${randomPiece.id}/${pieces.length})</div>
+                        <br>
+                        <div class="ascii-art">
+                            <pre>${decodedArt}</pre>
+                        </div>
+                        <br>
+                        <div class="success">Meow! Type 'kitty' again for another cute ASCII art! 🐾</div>
+                    `;
+
+                    this.addToOutput(artDisplay);
+                } catch (error) {
+                    this.addToOutput(`<div class="error">🐱 Oops! Error decoding ASCII art: ${error.message}</div>`);
+                }
+            })
+            .catch(error => {
+                this.addToOutput(`<div class="error">🐱 Failed to load ASCII art collection: ${error.message}</div>`);
+                this.addToOutput('<div>Make sure ascii_art_simple.json is in the same directory as the HTML file.</div>');
+            });
     }
 }
 
