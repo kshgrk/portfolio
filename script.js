@@ -31,8 +31,6 @@ class PortfolioTerminal {
         this.portfolioData = {
             name: "Kushagra Kaushal",
             title: "Data Scientist & Engineer",
-            email: "kushagra9nov@gmail.com",
-            phone: "+91 9599958093",
             location: "New Delhi, India",
             github: "https://github.com/kshgrk",
             linkedin: "https://linkedin.com/in/kshgrk",
@@ -325,12 +323,6 @@ class PortfolioTerminal {
             <div class="info">Get In Touch</div>
             <br>
             <div class="contact-list">
-                <div class="detail-line">
-                    <span class="contact-label">Email:</span> <a href="mailto:${this.portfolioData.email}" class="contact-link">${this.portfolioData.email}</a>
-                </div>
-                <div class="detail-line">
-                    <span class="contact-label">Phone:</span> <a href="tel:${this.portfolioData.phone}" class="contact-link">${this.portfolioData.phone}</a>
-                </div>
                 <div class="detail-line">
                     <span class="contact-label">Location:</span> ${this.portfolioData.location}
                 </div>
@@ -655,7 +647,7 @@ class PortfolioTerminal {
                 root.style.setProperty('--secondary-color', '#ff6600');
                 root.style.setProperty('--accent-color', '#ffff00');
                 root.style.setProperty('--text-color', '#ffaa00');
-                root.style.setProperty('--primary-color-rgb', '255, 170, 0');
+                root.style.setProperty('--primary-color-rgb', '255, 120, 0');
                 root.style.setProperty('--bg-gradient-1', '#1a1000');
                 root.style.setProperty('--bg-gradient-2', '#2a1a00');
                 // Force update body background
