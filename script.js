@@ -171,6 +171,9 @@ class PortfolioTerminal {
                 <div class="detail-line"><span class="success">Experience:</span> 3+ years in Data Science & Engineering</div>
                 <div class="detail-line"><span class="success">Focus Areas:</span> Data Engineering, ML, Analytics, Applied Research</div>
             </div>
+            <div style="margin-top: 12px;">
+                <a href="resume.pdf" download class="download-btn">⬇️ Download Resume</a>
+            </div>
         `;
     }
 
