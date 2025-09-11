@@ -4,6 +4,9 @@ class PortfolioTerminal {
         this.output = document.getElementById('output');
         this.commandHistory = [];
         this.historyIndex = -1;
+        this.host = document.getElementById('terminalHost');
+        this.overlay = document.getElementById('terminalOverlay');
+        this.overlayContent = document.getElementById('terminalOverlayContent');
         
         this.commands = {
             help: this.showHelp.bind(this),
@@ -31,12 +34,53 @@ class PortfolioTerminal {
         this.portfolioData = {
             name: "Kushagra Kaushal",
             title: "Data Scientist & Engineer",
-            location: "New Delhi, India",
+            location: "Somewhere in India",
             github: "https://github.com/kshgrk",
             linkedin: "https://linkedin.com/in/kshgrk",
-            website: "https://kushagrakaushal.dev",
             x: "https://x.com/kshgrk"
         };
+        this.skillsData = {
+            languages: ["Python", "C++", "C"],
+            ml: ["Scikit-learn", "TensorFlow", "PyTorch", "Deep Learning", "Computer Vision", "NLP"],
+            dataEng: ["dbt", "Apache Airflow", "BigQuery", "Cloud SQL"],
+            cloud: ["GCP", "AWS"],
+            viz: ["Looker Studio", "Plotly", "Dash"],
+            mlops: ["Kubernetes", "Docker", "Devtron CI/CD"],
+            misc: ["Linux", "MySQL", "Bash", "FastAPI", "Flask", "Django"]
+        };
+        this.projectsData = [
+            {
+                title: "Obelisk",
+                link: "https://github.com/kshgrk/obelisk",
+                date: "Ongoing",
+                bullets: [
+                    "Real-time chat app using Temporal workflows and OpenRouter models",
+                    "FastAPI proxy/backend, Vanilla JS frontend, SQLite persistence",
+                    "Extensible registry for tools and model management",
+                    "Robust retries and concurrent sessions"
+                ]
+            },
+            {
+                title: "IntelliCodebase",
+                link: "https://github.com/kshgrk/IntelliCodebase.git",
+                date: "Jun 2025",
+                bullets: [
+                    "LLM-powered codebase analysis and modernization",
+                    "Bash/Python tooling for refactors and linting",
+                    "Smart caching for large repositories",
+                    "Selective file analysis and targeted fixes"
+                ]
+            },
+            {
+                title: "LSMTree-AVL",
+                link: "https://github.com/kshgrk/LSMTree-AVL.git",
+                date: "Nov 2024",
+                bullets: [
+                    "Python LSM-tree with AVL in-memory index",
+                    "Bloom filter, WAL, SSTables, compaction"
+                ]
+            }
+        ];
         
         this.init();
     }
@@ -53,6 +97,151 @@ class PortfolioTerminal {
         
         // Initialize cursor position
         this.updateCursorPosition();
+
+        // Fullscreen controls
+        const fsToggle = document.getElementById('terminalFullscreenToggle');
+        const openFs = null; // removed button
+        const focusBtn = null; // removed button
+        const backdrop = document.getElementById('terminalOverlayBackdrop');
+        const closeBtn = document.getElementById('terminalOverlayClose');
+
+        this.fsToggle = fsToggle;
+        if (this.fsToggle) this.fsToggle.addEventListener('click', () => this.handleFullscreenToggle());
+        // openFs and focusBtn removed
+        if (backdrop) backdrop.addEventListener('click', () => this.exitFullscreen());
+        if (closeBtn) closeBtn.addEventListener('click', () => this.exitFullscreen());
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.overlay.classList.contains('active')) this.exitFullscreen();
+        });
+
+        // Render site sections from data
+        this.renderSectionsFromData();
+    }
+
+    isFullscreenActive() {
+        return this.overlay && this.overlay.classList.contains('active');
+    }
+
+    handleFullscreenToggle() {
+        if (this.isFullscreenActive()) {
+            this.exitFullscreen();
+        } else {
+            this.enterFullscreen();
+        }
+    }
+
+    enterFullscreen() {
+        if (!this.overlay || !this.overlayContent) return;
+        if (this.isFullscreenActive()) return; // already in fullscreen
+        const terminal = this.host.querySelector('.terminal-container');
+        this.placeholder = document.createElement('div');
+        this.placeholder.style.display = 'contents';
+        this.host.insertBefore(this.placeholder, terminal);
+        this.overlayContent.innerHTML = '';
+        this.overlayContent.appendChild(terminal);
+        this.overlay.classList.add('active');
+        if (this.fsToggle) {
+            this.fsToggle.textContent = '✕';
+            this.fsToggle.title = 'Close';
+        }
+        this.input.focus();
+    }
+
+    exitFullscreen() {
+        if (!this.overlay || !this.overlayContent || !this.placeholder) return;
+        if (!this.isFullscreenActive()) return;
+        const terminal = this.overlayContent.querySelector('.terminal-container');
+        this.host.insertBefore(terminal, this.placeholder);
+        this.placeholder.remove();
+        this.overlay.classList.remove('active');
+        if (this.fsToggle) {
+            this.fsToggle.textContent = '⛶';
+            this.fsToggle.title = 'Fullscreen';
+        }
+        this.input.focus();
+    }
+
+    // ---------- Shared renderers ----------
+    renderAboutHTML() {
+        return `
+            <div class="about-details">
+                <div class="detail-line"><span class="success">Name:</span> ${this.portfolioData.name}</div>
+                <div class="detail-line"><span class="success">Title:</span> ${this.portfolioData.title}</div>
+                <div class="detail-line"><span class="success">Location:</span> ${this.portfolioData.location}</div>
+                <div class="detail-line"><span class="success">Experience:</span> 3+ years in Data Science & Engineering</div>
+                <div class="detail-line"><span class="success">Focus Areas:</span> Data Engineering, ML, Analytics, Applied Research</div>
+            </div>
+        `;
+    }
+
+    renderSkillsHTML() {
+        const s = this.skillsData;
+        const row = (label, items) => `<div class="skill-category"><span class="skill-header">${label}:</span> ${items.join(', ')}</div>`;
+        return `
+            <div class="skills-list">
+                ${row('Programming Languages', s.languages)}
+                ${row('Machine Learning Frameworks', s.ml)}
+                ${row('Data Engineering Technologies', s.dataEng)}
+                ${row('Cloud Platforms', s.cloud)}
+                ${row('Data Visualization & Reporting Tools', s.viz)}
+                ${row('DevOps & MLOps Technologies', s.mlops)}
+                ${row('Additional Technologies', s.misc)}
+            </div>
+        `;
+    }
+
+    renderProjectsHTML(asPre = false) {
+        const blocks = this.projectsData.map(p => {
+            const bullets = p.bullets.map(b => `  • ${b}`).join('\n');
+            return `
+<span class="project-title">${p.title}</span>                          <span class="project-date">${p.date}</span>
+<a href="${p.link}" target="_blank" class="project-link">${p.link}</a>
+${bullets}
+`;
+        }).join('\n');
+
+        if (asPre) {
+            return `<div class="info">Projects</div><pre class="terminal-projects">${blocks}</pre>`;
+        }
+
+        // Non-terminal rendering
+        return `
+            <div class="terminal-projects">${blocks.replaceAll('\n', '<br>')}</div>
+        `;
+    }
+
+    renderContactHTML() {
+        return `
+            <div class="contact-list">
+                <div class="detail-line"><span class="contact-label">Location:</span> ${this.portfolioData.location}</div>
+                <div class="detail-line"><span class="contact-label">LinkedIn:</span> <a href="${this.portfolioData.linkedin}" target="_blank" class="contact-link">${this.portfolioData.linkedin}</a></div>
+                <div class="detail-line"><span class="contact-label">GitHub:</span> <a href="${this.portfolioData.github}" target="_blank" class="contact-link">${this.portfolioData.github}</a></div>
+                <div class="detail-line"><span class="contact-label">X:</span> <a href="${this.portfolioData.x}" target="_blank" class="contact-link">${this.portfolioData.x}</a></div>
+            </div>
+            <br>
+            <div class="success">Let's connect! I'm always open to discussing opportunities or interesting projects.</div>
+        `;
+    }
+
+    renderSectionsFromData() {
+        const heroTitle = document.getElementById('heroTitle');
+        const heroSubtitle = document.getElementById('heroSubtitle');
+        if (heroTitle) heroTitle.textContent = `Hi, I'm ${this.portfolioData.name.split(' ')[0]}`;
+        if (heroSubtitle) {
+            const loc = this.portfolioData.location || '';
+            const lower = loc.toLowerCase().trim();
+            const needsIn = !(lower.startsWith('in ') || lower.startsWith('at ') || lower.startsWith('on ') || lower.startsWith('somewhere'));
+            heroSubtitle.textContent = `${this.portfolioData.title} based ${needsIn ? 'in ' : ''}${loc}`;
+        }
+
+        const aboutEl = document.getElementById('aboutSectionContent');
+        const skillsEl = document.getElementById('skillsSectionContent');
+        const projectsEl = document.getElementById('projectsSectionContent');
+        const contactEl = document.getElementById('contactSectionContent');
+        if (aboutEl) aboutEl.innerHTML = this.renderAboutHTML();
+        if (skillsEl) skillsEl.innerHTML = this.renderSkillsHTML();
+        if (projectsEl) projectsEl.innerHTML = this.renderProjectsHTML(false);
+        if (contactEl) contactEl.innerHTML = this.renderContactHTML();
     }
     
     handleKeyDown(event) {
@@ -84,8 +273,8 @@ class PortfolioTerminal {
         this.historyIndex = this.commandHistory.length;
         
         // Display command
-        this.addToOutput(`<div class="command-line">
-            <span class="command-prompt">kushagra@portfolio:~$</span>
+        this.addToOutput(`<div class="prompt-spacer"></div><div class="command-line">
+            <span class="command-prompt">-> kushagra@portfolio:~$</span>
             <span class="command-text">${command}</span>
         </div>`);
         
@@ -211,77 +400,15 @@ class PortfolioTerminal {
     }
     
     showAbout() {
-        const aboutText = `
-            <div class="info">About ${this.portfolioData.name}</div>
-            <br>
-            <div class="about-details">
-                <div class="detail-line"><span class="success">Name:</span> ${this.portfolioData.name}</div>
-                <div class="detail-line"><span class="success">Title:</span> ${this.portfolioData.title}</div>
-                <div class="detail-line"><span class="success">Location:</span> ${this.portfolioData.location}</div>
-                <div class="detail-line"><span class="success">Experience:</span> 3+ years in Data Science & Engineering</div>
-                <div class="detail-line"><span class="success">Focus Areas:</span> Data Engineering, ML, Analytics, Applied Research</div>
-            </div>
-        `;
-        this.addToOutput(aboutText);
+        this.addToOutput(this.renderAboutHTML());
     }
     
     showSkills() {
-        const skillsText = `
-            <div class="info">Technical Skills</div>
-            <br>
-            <div class="skills-list">
-                <div class="skill-category">
-                    <span class="skill-header">Programming Languages:</span> Python, C++, C
-                </div>
-                <div class="skill-category">
-                    <span class="skill-header">Machine Learning Frameworks:</span> Scikit-learn, TensorFlow, PyTorch, Deep Learning, Computer Vision, Natural Language Processing
-                </div>
-                <div class="skill-category">
-                    <span class="skill-header">Data Engineering Technologies:</span> dbt, Apache Airflow, Google BigQuery, Cloud SQL
-                </div>
-                <div class="skill-category">
-                    <span class="skill-header">Cloud Platforms:</span> Google Cloud Platform, Amazon Web Services
-                </div>
-                <div class="skill-category">
-                    <span class="skill-header">Data Visualization & Reporting Tools:</span> Looker Studio, Plotly, Dash
-                </div>
-                <div class="skill-category">
-                    <span class="skill-header">DevOps & MLOps Technologies:</span> Kubernetes, Docker, Devtron CI/CD
-                </div>
-                <div class="skill-category">
-                    <span class="skill-header">Additional Technologies:</span> Linux, MySQL, Bash Scripting, FastAPI, Flask, Django
-                </div>
-            </div>
-        `;
-        this.addToOutput(skillsText);
+        this.addToOutput(this.renderSkillsHTML());
     }
     
     showProjects() {
-        const projectsText = `
-            <div class="info">Projects</div>
-            <pre class="terminal-projects">
-<span class="project-title">Obelisk</span>                                   <span class="project-date">Ongoing</span>
-<a href="https://github.com/kshgrk/obelisk" target="_blank" class="project-link">https://github.com/kshgrk/obelisk</a>
-  • Developed Obelisk, a real-time chat application leveraging Temporal workflows for fault-tolerant orchestration and OpenRouter's free AI models (e.g., DeepSeek, Mistral, Llama), enabling dynamic model switching and multi-conversation without context loss.
-  • Architected a multi-tiered system using FastAPI for proxy and backend services, Vanilla JavaScript frontend, and SQLite database, facilitating session management, real-time notifications, and persistent chat history.
-  • Implemented an extensible registry for dynamic tool calling, model management, and integration with external APIs and weather/AI models.
-  • Ensured robustness through Temporal's retry mechanisms and workflow orchestration, supporting concurrent user sessions and graceful error handling.
-
-<span class="project-title">IntelliCodebase</span>                          <span class="project-date">Jun 2025</span>
-<a href="https://github.com/kshgrk/IntelliCodebase.git" target="_blank" class="project-link">https://github.com/kshgrk/IntelliCodebase.git</a>
-  • Architected an advanced LLM-powered system (utilizing Gemini) for comprehensive codebase analysis and modernization.
-  • Built interactive tooling with Bash and Python to execute system-level refactoring, including file extraction, linting, and script execution.
-  • Designed intelligent commit and caching mechanisms to enhance performance during analysis of large-scale repositories.
-  • Enabled functionality to identify codebase issues and propose targeted fixes, with selective file analysis capability.
-
-<span class="project-title">LSMTree-AVL</span>                              <span class="project-date">Nov 2024</span>
-<a href="https://github.com/kshgrk/LSMTree-AVL.git" target="_blank" class="project-link">https://github.com/kshgrk/LSMTree-AVL.git</a>
-  • Engineered a Python-based LSM-tree database utilizing AVL trees for efficient in-memory and disk management, optimizing storage and retrieval operations.
-  • Incorporated a Bloom filter for rapid key presence verification, automatic flushing to SSTables, and multi-threaded compaction strategies.
-  • Developed a write-ahead log mechanism to ensure data durability and robust recovery processes.
-            </pre>
-        `;
-        this.addToOutput(projectsText);
+        this.addToOutput(this.renderProjectsHTML(true));
     }
     
     showExperience() {
@@ -319,30 +446,7 @@ class PortfolioTerminal {
     }
     
     showContact() {
-        const contactText = `
-            <div class="info">Get In Touch</div>
-            <br>
-            <div class="contact-list">
-                <div class="detail-line">
-                    <span class="contact-label">Location:</span> ${this.portfolioData.location}
-                </div>
-                <div class="detail-line">
-                    <span class="contact-label">Website:</span> <a href="${this.portfolioData.website}" target="_blank" class="contact-link">${this.portfolioData.website}</a>
-                </div>
-                <div class="detail-line">
-                    <span class="contact-label">LinkedIn:</span> <a href="${this.portfolioData.linkedin}" target="_blank" class="contact-link">${this.portfolioData.linkedin}</a>
-                </div>
-                <div class="detail-line">
-                    <span class="contact-label">GitHub:</span> <a href="${this.portfolioData.github}" target="_blank" class="contact-link">${this.portfolioData.github}</a>
-                </div>
-                <div class="detail-line">
-                    <span class="contact-label">X:</span> <a href="${this.portfolioData.x}" target="_blank" class="contact-link">${this.portfolioData.x}</a>
-                </div>
-            </div>
-            <br>
-            <div class="success">Let's connect! I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology.</div>
-        `;
-        this.addToOutput(contactText);
+        this.addToOutput(this.renderContactHTML());
     }
     
     showResume() {

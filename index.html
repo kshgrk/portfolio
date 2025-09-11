@@ -8,40 +8,103 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="icon" href="favicon/favicon.ico">
+    
 </head>
 <body>
-    <div class="terminal-container">
-        <div class="terminal-header">
-            <div class="terminal-buttons">
-                <span class="terminal-button close"></span>
-                <span class="terminal-button minimize"></span>
-                <span class="terminal-button maximize"></span>
-            </div>
-            <div class="terminal-title">kushagra@portfolio:~$</div>
+    <header class="site-header">
+        <div class="site-container">
+            <div class="brand">KK</div>
+            <nav class="site-nav">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#skills">Skills</a>
+                <a href="#contact">Contact</a>
+            </nav>
         </div>
-        
-        <div class="terminal-body">
-            <div class="terminal-output" id="output">
-                <div class="welcome-message">
-                    <pre class="ascii-art">
+    </header>
+
+    <main class="site-main" id="home">
+        <section class="hero">
+            <div class="site-container hero-grid">
+                <div class="hero-copy">
+                    <h1 id="heroTitle">Hi, I'm Kushagra</h1>
+                    <p id="heroSubtitle">Data Scientist & Engineer crafting scalable data systems, ML, and delightful developer experiences.</p>
+                </div>
+                <div class="hero-terminal" id="terminalHost">
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <div class="terminal-buttons">
+                                <span class="terminal-button close"></span>
+                                <span class="terminal-button minimize"></span>
+                                <span class="terminal-button maximize"></span>
+                            </div>
+                            <div class="terminal-title">kushagra@portfolio:~$</div>
+                            <button class="terminal-fullscreen-toggle" id="terminalFullscreenToggle" title="Fullscreen">⛶</button>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="terminal-output" id="output">
+                                <div class="welcome-message">
+                                    <pre class="ascii-art">
            __..--''``---....___   _..._    __
  /// //_.-'    .-/";  `        ``<._  ``.''_ `. / // /
 ///_.-' _..--.'_    \                    `( ) ) // //
 / (_..-' // (< _     ;_..__               ; `' / ///
  / // // //  `-._,_)' // / ``--...____..-' /// / //
-                    </pre>
-                    <p class="intro-text">Welcome to my interactive portfolio terminal!</p>
-                    <p class="help-text">Type '<span class="command">help</span>' to see available commands</p>
-                    <br>
+                                    </pre>
+                                    <p class="intro-text">Welcome to my interactive portfolio terminal!</p>
+                                    <p class="help-text">Type '<span class="command">help</span>' to see available commands</p>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="terminal-input-line">
+                                <span class="prompt">-> kushagra@portfolio:~$ </span>
+                                <input type="text" id="commandInput" class="terminal-input" autocomplete="on" spellcheck="false">
+                                <span class="cursor">█</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="terminal-input-line">
-                <span class="prompt">kushagra@portfolio:~$ </span>
-                <input type="text" id="commandInput" class="terminal-input" autocomplete="on" spellcheck="false">
-                <span class="cursor">█</span>
+        </section>
+
+        <section class="content-section" id="about">
+            <div class="site-container">
+                <h2>About</h2>
+                <div id="aboutSectionContent"></div>
             </div>
-        </div>
+        </section>
+
+        <section class="content-section" id="projects">
+            <div class="site-container">
+                <h2>Projects</h2>
+                <div id="projectsSectionContent"></div>
+            </div>
+        </section>
+
+        <section class="content-section" id="skills">
+            <div class="site-container">
+                <h2>Skills</h2>
+                <div id="skillsSectionContent"></div>
+            </div>
+        </section>
+
+        <section class="content-section" id="contact">
+            <div class="site-container">
+                <h2>Contact</h2>
+                <div id="contactSectionContent"></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="terminal-overlay" id="terminalOverlay" aria-hidden="true">
+        <div class="terminal-overlay-backdrop" id="terminalOverlayBackdrop"></div>
+        <button class="terminal-overlay-close" id="terminalOverlayClose" title="Close">✕</button>
+        <div class="terminal-overlay-content" id="terminalOverlayContent"></div>
     </div>
 
     <script src="script.js"></script>

@@ -19,16 +19,102 @@ body {
     font-family: 'Courier New', 'Consolas', 'Monaco', 'Menlo', monospace;
     background: linear-gradient(45deg, var(--bg-gradient-1), var(--bg-gradient-2));
     color: var(--text-color);
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
+
+/* Site shell */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.2);
+    backdrop-filter: blur(8px);
+}
+
+.site-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 20px;
+}
+
+.brand {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.site-header .site-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 12px;
+}
+
+/* removed nav-terminal-btn button */
+
+.site-main {
+    padding-bottom: 60px;
+}
+
+.hero {
+    padding: 40px 0 10px 0;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+}
+
+.hero-copy h1 {
+    font-size: 28px;
+    color: var(--accent-color);
+    margin-bottom: 8px;
+}
+
+.hero-copy p { font-size: 14px; color: #b6fcb6; }
+
+.hero-ctas { display: flex; gap: 10px; margin-top: 14px; }
+
+.btn { font-size: 12px; padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(var(--primary-color-rgb), 0.3); cursor: pointer; }
+.btn.primary { background: rgba(var(--primary-color-rgb), 0.2); color: var(--text-color); }
+.btn.ghost { background: transparent; color: var(--text-color); }
+
+.content-section { padding: 40px 0; border-top: 1px solid rgba(var(--primary-color-rgb), 0.15); }
+.content-section h2 { font-size: 16px; color: var(--accent-color); margin-bottom: 10px; }
+.content-section p { font-size: 14px; color: #cde9cd; }
+
+/* Ensure consistent 14px font in site sections (terminal remains 12px) */
+.content-section .detail-line,
+.content-section .skill-category,
+.content-section .skills-list,
+.content-section .terminal-projects,
+.content-section .project-title,
+.content-section .project-description,
+.content-section .project-tech,
+.content-section .contact-list,
+.content-section .contact-item,
+.content-section .contact-label,
+.content-section a { font-size: 14px; }
 
 /* Terminal container */
 .terminal-container {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background: rgba(var(--bg-gradient-1), 0.95);
     border-radius: 0;
     box-shadow:
@@ -38,6 +124,8 @@ body {
     overflow: hidden;
     backdrop-filter: blur(10px);
 }
+
+.hero-terminal { height: 420px; }
 
 /* Terminal header */
 .terminal-header {
@@ -175,6 +263,8 @@ body {
     margin-bottom: 5px;
     font-size: 12px;
 }
+
+.prompt-spacer { height: 12px; }
 
 .command-prompt {
     color: var(--primary-color);
@@ -320,11 +410,7 @@ a:hover {
     border-bottom: none;
 }
 
-.skill-header {
-    color: var(--primary-color);
-    font-weight: 600;
-    margin-right: 8px;
-}
+.skill-header { color: var(--primary-color); font-weight: 400; margin-right: 8px; }
 
 .skills-grid {
     display: grid;
@@ -405,11 +491,8 @@ a:hover {
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .terminal-container {
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
-    }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-terminal { height: 380px; }
     
     .terminal-body {
         padding: 15px;
@@ -442,6 +525,14 @@ a:hover {
     z-index: 1000;
     backdrop-filter: blur(5px);
 }
+
+/* Fullscreen overlay for terminal */
+.terminal-overlay { position: fixed; inset: 0; display: none; z-index: 1000; }
+.terminal-overlay.active { display: block; }
+.terminal-overlay-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+.terminal-overlay-content { position: relative; z-index: 1; width: min(1200px, 96vw); height: min(80vh, 90vh); margin: 6vh auto; }
+.terminal-fullscreen-toggle { margin-left: auto; background: transparent; color: var(--text-color); border: 1px solid rgba(var(--primary-color-rgb), 0.3); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+.terminal-overlay-close { position: absolute; right: 16px; top: 12px; z-index: 2; background: rgba(255, 0, 0, 0.2); color: #ff6b6b; border: 1px solid rgba(255,0,0,0.3); border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 12px; }
 
 .pdf-popup-content {
     width: 95%;
