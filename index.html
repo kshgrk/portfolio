@@ -3,68 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kushagra Kaushal - Portfolio Terminal</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Kushagra Kaushal | Data Scientist & Engineer</title>
+    <meta name="description" content="Portfolio of Kushagra Kaushal, a data scientist and engineer focused on data systems, machine learning, analytics, and developer tooling.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="icon" href="favicon/favicon.ico">
-    
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-mode="normal">
+    <div class="page-glow"></div>
+
     <header class="site-header">
-        <div class="site-container">
-            <div class="brand">KK</div>
-            <nav class="site-nav">
-                <a href="#home">Home</a>
+        <div class="site-shell header-row">
+            <a class="brand" href="#home" aria-label="Kushagra Kaushal home">
+                <span class="brand-mark">KK</span>
+                <span class="brand-copy">
+                    <strong>Kushagra Kaushal</strong>
+                    <span>Data Scientist & Engineer</span>
+                </span>
+            </a>
+
+            <nav class="site-nav" aria-label="Primary">
                 <a href="#about">About</a>
                 <a href="#projects">Projects</a>
+                <a href="#experience">Experience</a>
                 <a href="#skills">Skills</a>
                 <a href="#contact">Contact</a>
             </nav>
+
+            <div class="mode-switcher" role="group" aria-label="Website mode switcher">
+                <span class="mode-label">Normal</span>
+                <label class="mode-toggle" for="modeToggle">
+                    <input id="modeToggle" type="checkbox" aria-label="Toggle between normal and tech mode">
+                    <span class="mode-track">
+                        <span class="mode-thumb"></span>
+                    </span>
+                </label>
+                <span class="mode-label">Tech</span>
+            </div>
         </div>
     </header>
 
-    <main class="site-main" id="home">
-        <section class="hero">
-            <div class="site-container hero-grid">
+    <main id="home">
+        <section class="hero-section">
+            <div class="site-shell hero-grid">
                 <div class="hero-copy">
-                    <h1 id="heroTitle">Hi, I'm Kushagra</h1>
-                    <p id="heroSubtitle">Data Scientist & Engineer crafting scalable data systems, ML, and delightful developer experiences.</p>
+                    <div class="hero-kicker">Data systems, ML products, and analytics infrastructure</div>
+                    <h1 id="heroTitle">Kushagra builds production-grade data and AI systems.</h1>
+                    <p class="hero-subtitle" id="heroSubtitle">
+                        Data Scientist & Engineer with experience across analytics, machine learning, data pipelines, and developer-facing tooling.
+                    </p>
+
+                    <div class="hero-metrics" id="heroMetrics"></div>
+
+                    <div class="hero-actions">
+                        <a class="button primary" href="#projects">View Projects</a>
+                        <a class="button secondary" href="resume.pdf" target="_blank" rel="noreferrer">Open Resume</a>
+                    </div>
+
+                    <div class="hero-note">
+                        <span class="mode-note mode-note-normal">Normal mode highlights the work in a more familiar, client-friendly layout.</span>
+                        <span class="mode-note mode-note-tech">Tech mode restores the terminal-first experience for people who prefer exploring by command line.</span>
+                    </div>
                 </div>
-                <div class="hero-terminal" id="terminalHost">
-                    <div class="terminal-container">
-                        <div class="terminal-header">
-                            <div class="terminal-buttons">
-                                <span class="terminal-button close"></span>
-                                <span class="terminal-button minimize"></span>
-                                <span class="terminal-button maximize"></span>
-                            </div>
-                            <div class="terminal-title">kushagra@portfolio:~$</div>
-                            <button class="terminal-fullscreen-toggle" id="terminalFullscreenToggle" title="Fullscreen">⛶</button>
-                        </div>
-                        <div class="terminal-body">
-                            <div class="terminal-output" id="output">
-                                <div class="welcome-message">
-                                    <pre class="ascii-art">
-           __..--''``---....___   _..._    __
- /// //_.-'    .-/";  `        ``<._  ``.''_ `. / // /
-///_.-' _..--.'_    \                    `( ) ) // //
-/ (_..-' // (< _     ;_..__               ; `' / ///
- / // // //  `-._,_)' // / ``--...____..-' /// / //
-                                    </pre>
-                                    <p class="intro-text">Welcome to my interactive portfolio terminal!</p>
-                                    <p class="help-text">Type '<span class="command">help</span>' to see available commands</p>
-                                    <br>
+
+                <div class="hero-panel">
+                    <div class="normal-spotlight" id="normalSpotlight"></div>
+
+                    <div class="terminal-host" id="terminalHost">
+                        <div class="terminal-container">
+                            <div class="terminal-header">
+                                <div class="terminal-buttons">
+                                    <span class="terminal-button close"></span>
+                                    <span class="terminal-button minimize"></span>
+                                    <span class="terminal-button maximize"></span>
                                 </div>
+                                <div class="terminal-title">kushagra@portfolio:~$</div>
+                                <button class="terminal-fullscreen-toggle" id="terminalFullscreenToggle" title="Fullscreen" aria-label="Open terminal fullscreen">⛶</button>
                             </div>
-                            <div class="terminal-input-line">
-                                <span class="prompt">-> kushagra@portfolio:~$ </span>
-                                <input type="text" id="commandInput" class="terminal-input" autocomplete="on" spellcheck="false">
-                                <span class="cursor">█</span>
+                            <div class="terminal-body">
+                                <div class="terminal-output" id="output">
+                                    <div class="welcome-message">
+                                        <pre class="ascii-art">
+  _             _                                         
+ | | ____   ___| |__   __ _  __ _ _ __ __ _              
+ | |/ /\ \ / / | '_ \ / _` |/ _` | '__/ _` |             
+ |   <  \ V /| | |_) | (_| | (_| | | | (_| |             
+ |_|\_\  \_/ |_|_.__/ \__,_|\__, |_|  \__,_|             
+                            |___/                        
+                                        </pre>
+                                        <p class="intro-text">Interactive portfolio terminal ready.</p>
+                                        <p class="help-text">Type <span class="command">help</span> to explore projects, experience, contact info, and more.</p>
+                                    </div>
+                                </div>
+                                <div class="terminal-input-line">
+                                    <span class="prompt">-&gt; kushagra@portfolio:~$</span>
+                                    <input type="text" id="commandInput" class="terminal-input" autocomplete="on" spellcheck="false">
+                                    <span class="cursor">█</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -73,37 +113,59 @@
         </section>
 
         <section class="content-section" id="about">
-            <div class="site-container">
-                <h2>About</h2>
-                <div id="aboutSectionContent"></div>
+            <div class="site-shell section-shell">
+                <div class="section-heading">
+                    <span class="eyebrow">About</span>
+                    <h2>Building reliable data products with engineering discipline.</h2>
+                </div>
+                <div class="section-body" id="aboutSectionContent"></div>
             </div>
         </section>
 
         <section class="content-section" id="projects">
-            <div class="site-container">
-                <h2>Projects</h2>
-                <div id="projectsSectionContent"></div>
+            <div class="site-shell section-shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Selected Work</span>
+                    <h2>Projects that combine systems thinking with applied AI.</h2>
+                </div>
+                <div class="section-body" id="projectsSectionContent"></div>
+            </div>
+        </section>
+
+        <section class="content-section" id="experience">
+            <div class="site-shell section-shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Experience</span>
+                    <h2>Production work across marketing analytics, ML, and data platforms.</h2>
+                </div>
+                <div class="section-body" id="experienceSectionContent"></div>
             </div>
         </section>
 
         <section class="content-section" id="skills">
-            <div class="site-container">
-                <h2>Skills</h2>
-                <div id="skillsSectionContent"></div>
+            <div class="site-shell section-shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Capabilities</span>
+                    <h2>Tools and domains used to ship end-to-end systems.</h2>
+                </div>
+                <div class="section-body" id="skillsSectionContent"></div>
             </div>
         </section>
 
         <section class="content-section" id="contact">
-            <div class="site-container">
-                <h2>Contact</h2>
-                <div id="contactSectionContent"></div>
+            <div class="site-shell section-shell contact-shell">
+                <div class="section-heading">
+                    <span class="eyebrow">Contact</span>
+                    <h2>Open to strong teams, hard problems, and ambitious product work.</h2>
+                </div>
+                <div class="section-body" id="contactSectionContent"></div>
             </div>
         </section>
     </main>
 
     <div class="terminal-overlay" id="terminalOverlay" aria-hidden="true">
         <div class="terminal-overlay-backdrop" id="terminalOverlayBackdrop"></div>
-        <button class="terminal-overlay-close" id="terminalOverlayClose" title="Close">✕</button>
+        <button class="terminal-overlay-close" id="terminalOverlayClose" title="Close" aria-label="Close terminal">✕</button>
         <div class="terminal-overlay-content" id="terminalOverlayContent"></div>
     </div>
 

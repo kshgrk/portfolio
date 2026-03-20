@@ -1,13 +1,113 @@
 class PortfolioTerminal {
     constructor() {
-        this.input = document.getElementById('commandInput');
-        this.output = document.getElementById('output');
+        this.storageKey = "portfolio-mode";
+        this.body = document.body;
+        this.input = document.getElementById("commandInput");
+        this.output = document.getElementById("output");
+        this.modeToggle = document.getElementById("modeToggle");
+        this.host = document.getElementById("terminalHost");
+        this.overlay = document.getElementById("terminalOverlay");
+        this.overlayContent = document.getElementById("terminalOverlayContent");
         this.commandHistory = [];
         this.historyIndex = -1;
-        this.host = document.getElementById('terminalHost');
-        this.overlay = document.getElementById('terminalOverlay');
-        this.overlayContent = document.getElementById('terminalOverlayContent');
-        
+
+        this.portfolioData = {
+            name: "Kushagra Kaushal",
+            firstName: "Kushagra",
+            title: "Data Scientist & Engineer",
+            location: "India",
+            summary: "I design data systems, analytics workflows, and AI-enabled products that are reliable in production and useful to real teams.",
+            experienceYears: "3+",
+            focusAreas: ["Data Engineering", "Machine Learning", "Analytics", "Developer Tooling"],
+            github: "https://github.com/kshgrk",
+            linkedin: "https://linkedin.com/in/kshgrk",
+            x: "https://x.com/kshgrk"
+        };
+
+        this.skillsData = {
+            "Programming Languages": ["Python", "C++", "C", "SQL", "Bash"],
+            "Machine Learning": ["Scikit-learn", "TensorFlow", "PyTorch", "Deep Learning", "Computer Vision", "NLP"],
+            "Data Engineering": ["dbt", "Apache Airflow", "BigQuery", "Cloud SQL", "ETL Design"],
+            "Cloud & Infrastructure": ["GCP", "AWS", "Kubernetes", "Docker", "Devtron CI/CD"],
+            "Analytics & BI": ["Looker Studio", "Plotly", "Dash", "Experiment Analysis"],
+            "Backend & Apps": ["FastAPI", "Flask", "Django", "Linux", "MySQL"]
+        };
+
+        this.projectsData = [
+            {
+                title: "Obelisk",
+                date: "Ongoing",
+                category: "AI Application Infrastructure",
+                link: "https://github.com/kshgrk/obelisk",
+                summary: "A real-time chat application built around Temporal workflows and modern model routing, designed for resilience and extensibility.",
+                bullets: [
+                    "Built a FastAPI backend and vanilla JavaScript frontend around multi-session chat workflows.",
+                    "Added SQLite-backed persistence, retries, and concurrent session support.",
+                    "Created an extensible registry for tools, models, and workflow orchestration."
+                ]
+            },
+            {
+                title: "IntelliCodebase",
+                date: "June 2025",
+                category: "Developer Tooling",
+                link: "https://github.com/kshgrk/IntelliCodebase.git",
+                summary: "LLM-powered codebase analysis and modernization tooling for large repositories with selective file targeting and caching.",
+                bullets: [
+                    "Combined Bash and Python automation to inspect repositories and focus changes where they matter.",
+                    "Improved iteration speed with caching for repeated analysis on large codebases.",
+                    "Supported targeted fixes, refactors, and lint-driven cleanup."
+                ]
+            },
+            {
+                title: "LSMTree-AVL",
+                date: "November 2024",
+                category: "Storage Systems",
+                link: "https://github.com/kshgrk/LSMTree-AVL.git",
+                summary: "A Python implementation of an LSM tree backed by an AVL in-memory index to explore storage-engine fundamentals.",
+                bullets: [
+                    "Implemented write-ahead logging, SSTables, compaction, and bloom filters.",
+                    "Focused on predictable writes and efficient lookup behavior.",
+                    "Used the project as a practical study of database internals."
+                ]
+            }
+        ];
+
+        this.experienceData = [
+            {
+                role: "Data Scientist",
+                company: "New Engen",
+                location: "Seattle, US (Remote)",
+                dates: "November 2022 - Present",
+                link: "https://www.newengen.com/",
+                bullets: [
+                    "Architected AI-powered chatbot systems using Claude and Gemini to deliver actionable marketing insights.",
+                    "Designed and maintained ETL pipelines with Adverity, Python, dbt, BigQuery, and Cloud SQL on Kubernetes.",
+                    "Analyzed roughly 5 TB of marketing data to surface decision-critical performance metrics.",
+                    "Built dashboards in Looker Studio and contributed to the LIFT SaaS platform.",
+                    "Developed forecasting and recommendation systems for pacing, budgeting, and operational efficiency."
+                ]
+            },
+            {
+                role: "Data Science Consultant",
+                company: "Kauriink Pvt. Ltd.",
+                location: "New Delhi, India (Remote)",
+                dates: "August 2022 - November 2022",
+                link: "https://www.techatplay.ai/",
+                bullets: [
+                    "Developed deep learning models for player performance analysis using computer vision.",
+                    "Reached 87% accuracy for posture classification and 92% accuracy for shot type classification.",
+                    "Applied color segmentation, sliding windows, and transfer learning to sports video analysis."
+                ]
+            }
+        ];
+
+        this.educationData = [
+            {
+                school: "Indian Institute of Information Technology, Bhopal",
+                degree: "B.Tech in Information Technology"
+            }
+        ];
+
         this.commands = {
             help: this.showHelp.bind(this),
             about: this.showAbout.bind(this),
@@ -28,98 +128,273 @@ class PortfolioTerminal {
             pwd: this.showPwd.bind(this),
             echo: this.echo.bind(this),
             theme: this.changeTheme.bind(this),
-            kitty: this.showKitty.bind(this)
+            kitty: this.showKitty.bind(this),
+            mode: this.showModeHelp.bind(this)
         };
-        
-        this.portfolioData = {
-            name: "Kushagra Kaushal",
-            title: "Data Scientist & Engineer",
-            location: "Somewhere in India",
-            github: "https://github.com/kshgrk",
-            linkedin: "https://linkedin.com/in/kshgrk",
-            x: "https://x.com/kshgrk"
-        };
-        this.skillsData = {
-            languages: ["Python", "C++", "C"],
-            ml: ["Scikit-learn", "TensorFlow", "PyTorch", "Deep Learning", "Computer Vision", "NLP"],
-            dataEng: ["dbt", "Apache Airflow", "BigQuery", "Cloud SQL"],
-            cloud: ["GCP", "AWS"],
-            viz: ["Looker Studio", "Plotly", "Dash"],
-            mlops: ["Kubernetes", "Docker", "Devtron CI/CD"],
-            misc: ["Linux", "MySQL", "Bash", "FastAPI", "Flask", "Django"]
-        };
-        this.projectsData = [
-            {
-                title: "Obelisk",
-                link: "https://github.com/kshgrk/obelisk",
-                date: "Ongoing",
-                bullets: [
-                    "Real-time chat app using Temporal workflows and OpenRouter models",
-                    "FastAPI proxy/backend, Vanilla JS frontend, SQLite persistence",
-                    "Extensible registry for tools and model management",
-                    "Robust retries and concurrent sessions"
-                ]
-            },
-            {
-                title: "IntelliCodebase",
-                link: "https://github.com/kshgrk/IntelliCodebase.git",
-                date: "Jun 2025",
-                bullets: [
-                    "LLM-powered codebase analysis and modernization",
-                    "Bash/Python tooling for refactors and linting",
-                    "Smart caching for large repositories",
-                    "Selective file analysis and targeted fixes"
-                ]
-            },
-            {
-                title: "LSMTree-AVL",
-                link: "https://github.com/kshgrk/LSMTree-AVL.git",
-                date: "Nov 2024",
-                bullets: [
-                    "Python LSM-tree with AVL in-memory index",
-                    "Bloom filter, WAL, SSTables, compaction"
-                ]
-            }
-        ];
-        
+
         this.init();
     }
-    
+
     init() {
-        this.input.addEventListener('keydown', this.handleKeyDown.bind(this));
-        this.input.addEventListener('input', this.updateCursorPosition.bind(this));
-        this.input.focus();
-        
-        // Keep input focused
-        document.addEventListener('click', () => {
-            this.input.focus();
-        });
-        
-        // Initialize cursor position
-        this.updateCursorPosition();
-
-        // Fullscreen controls
-        const fsToggle = document.getElementById('terminalFullscreenToggle');
-        const openFs = null; // removed button
-        const focusBtn = null; // removed button
-        const backdrop = document.getElementById('terminalOverlayBackdrop');
-        const closeBtn = document.getElementById('terminalOverlayClose');
-
-        this.fsToggle = fsToggle;
-        if (this.fsToggle) this.fsToggle.addEventListener('click', () => this.handleFullscreenToggle());
-        // openFs and focusBtn removed
-        if (backdrop) backdrop.addEventListener('click', () => this.exitFullscreen());
-        if (closeBtn) closeBtn.addEventListener('click', () => this.exitFullscreen());
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.overlay.classList.contains('active')) this.exitFullscreen();
-        });
-
-        // Render site sections from data
+        this.applyStoredMode();
         this.renderSectionsFromData();
+        this.renderHeroMetrics();
+        this.renderSpotlight();
+        this.bindEvents();
+        this.updateCursorPosition();
+    }
+
+    bindEvents() {
+        if (this.input) {
+            this.input.addEventListener("keydown", this.handleKeyDown.bind(this));
+            this.input.addEventListener("input", this.updateCursorPosition.bind(this));
+        }
+
+        document.addEventListener("click", (event) => {
+            if (this.overlay && this.overlay.classList.contains("active")) {
+                return;
+            }
+
+            const interactive = event.target.closest("a, button, input, iframe");
+            if (!interactive && this.input) {
+                this.input.focus();
+            }
+        });
+
+        if (this.modeToggle) {
+            this.modeToggle.addEventListener("change", () => {
+                this.setMode(this.modeToggle.checked ? "tech" : "normal");
+            });
+        }
+
+        const fsToggle = document.getElementById("terminalFullscreenToggle");
+        const backdrop = document.getElementById("terminalOverlayBackdrop");
+        const closeBtn = document.getElementById("terminalOverlayClose");
+
+        if (fsToggle) {
+            this.fsToggle = fsToggle;
+            fsToggle.addEventListener("click", () => this.handleFullscreenToggle());
+        }
+
+        if (backdrop) {
+            backdrop.addEventListener("click", () => this.exitFullscreen());
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener("click", () => this.exitFullscreen());
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && this.overlay && this.overlay.classList.contains("active")) {
+                this.exitFullscreen();
+            }
+        });
+    }
+
+    applyStoredMode() {
+        const stored = localStorage.getItem(this.storageKey);
+        const mode = stored === "tech" ? "tech" : "normal";
+        this.setMode(mode, false);
+    }
+
+    setMode(mode, persist = true) {
+        this.body.dataset.mode = mode;
+        if (this.modeToggle) {
+            this.modeToggle.checked = mode === "tech";
+        }
+        if (persist) {
+            localStorage.setItem(this.storageKey, mode);
+        }
+    }
+
+    renderHeroMetrics() {
+        const metrics = [
+            { value: this.portfolioData.experienceYears, label: "years in production data and ML work" },
+            { value: "5 TB", label: "marketing data analyzed at scale" },
+            { value: "4", label: "focus areas across data, ML, analytics, and tooling" }
+        ];
+
+        const metricsEl = document.getElementById("heroMetrics");
+        if (!metricsEl) {
+            return;
+        }
+
+        metricsEl.innerHTML = metrics.map((metric) => `
+            <article class="metric-card">
+                <span class="metric-value">${metric.value}</span>
+                <span class="metric-label">${metric.label}</span>
+            </article>
+        `).join("");
+    }
+
+    renderSpotlight() {
+        const spotlight = document.getElementById("normalSpotlight");
+        if (!spotlight) {
+            return;
+        }
+
+        spotlight.innerHTML = `
+            <div class="spotlight-grid">
+                <article class="spotlight-card">
+                    <div class="eyebrow">What I Do</div>
+                    <h3>From raw data to production decisions</h3>
+                    <p>${this.portfolioData.summary}</p>
+                </article>
+                <article class="spotlight-card">
+                    <div class="eyebrow">Focus</div>
+                    <ul class="spotlight-list">
+                        ${this.portfolioData.focusAreas.map((item) => `<li>${item}</li>`).join("")}
+                    </ul>
+                </article>
+                <article class="spotlight-card">
+                    <div class="eyebrow">For Technical Visitors</div>
+                    <p>Switch to tech mode to explore the same portfolio through an interactive terminal with commands like <span class="pill">help</span>, <span class="pill">projects</span>, and <span class="pill">experience</span>.</p>
+                </article>
+            </div>
+        `;
+    }
+
+    renderSectionsFromData() {
+        const heroTitle = document.getElementById("heroTitle");
+        const heroSubtitle = document.getElementById("heroSubtitle");
+        if (heroTitle) {
+            heroTitle.textContent = `${this.portfolioData.firstName} builds production-grade data and AI systems.`;
+        }
+        if (heroSubtitle) {
+            heroSubtitle.textContent = `${this.portfolioData.title} based in ${this.portfolioData.location}. ${this.portfolioData.summary}`;
+        }
+
+        const aboutEl = document.getElementById("aboutSectionContent");
+        const projectsEl = document.getElementById("projectsSectionContent");
+        const experienceEl = document.getElementById("experienceSectionContent");
+        const skillsEl = document.getElementById("skillsSectionContent");
+        const contactEl = document.getElementById("contactSectionContent");
+
+        if (aboutEl) {
+            aboutEl.innerHTML = this.renderAboutSectionHTML();
+        }
+        if (projectsEl) {
+            projectsEl.innerHTML = this.renderProjectsSectionHTML();
+        }
+        if (experienceEl) {
+            experienceEl.innerHTML = this.renderExperienceSectionHTML();
+        }
+        if (skillsEl) {
+            skillsEl.innerHTML = this.renderSkillsSectionHTML();
+        }
+        if (contactEl) {
+            contactEl.innerHTML = this.renderContactSectionHTML();
+        }
+    }
+
+    renderAboutSectionHTML() {
+        return `
+            <div class="about-grid">
+                <article class="card">
+                    <p class="lede">${this.portfolioData.summary}</p>
+                </article>
+                <article class="card">
+                    <div class="detail-list">
+                        <div class="detail-item"><strong>Name</strong><br>${this.portfolioData.name}</div>
+                        <div class="detail-item"><strong>Role</strong><br>${this.portfolioData.title}</div>
+                        <div class="detail-item"><strong>Location</strong><br>${this.portfolioData.location}</div>
+                        <div class="detail-item"><strong>Focus Areas</strong><br>${this.portfolioData.focusAreas.join(", ")}</div>
+                    </div>
+                </article>
+            </div>
+        `;
+    }
+
+    renderProjectsSectionHTML() {
+        return `
+            <div class="project-grid">
+                ${this.projectsData.map((project) => `
+                    <article class="project-card">
+                        <div class="eyebrow">${project.category}</div>
+                        <h3>${project.title}</h3>
+                        <div class="project-meta">
+                            <span>${project.date}</span>
+                            <a href="${project.link}" target="_blank" rel="noreferrer">Repository</a>
+                        </div>
+                        <p class="lede">${project.summary}</p>
+                        <ul class="bullet-list">
+                            ${project.bullets.map((bullet) => `<li>${bullet}</li>`).join("")}
+                        </ul>
+                    </article>
+                `).join("")}
+            </div>
+        `;
+    }
+
+    renderExperienceSectionHTML() {
+        return `
+            <div class="experience-grid">
+                ${this.experienceData.map((item) => `
+                    <article class="timeline-card">
+                        <div class="eyebrow">${item.company}</div>
+                        <h3>${item.role}</h3>
+                        <div class="timeline-meta">
+                            <span>${item.dates}</span>
+                            <span>${item.location}</span>
+                            <a href="${item.link}" target="_blank" rel="noreferrer">Company Site</a>
+                        </div>
+                        <ul class="bullet-list">
+                            ${item.bullets.map((bullet) => `<li>${bullet}</li>`).join("")}
+                        </ul>
+                    </article>
+                `).join("")}
+                ${this.educationData.map((edu) => `
+                    <article class="timeline-card">
+                        <div class="eyebrow">Education</div>
+                        <h3>${edu.school}</h3>
+                        <p class="meta-line"><strong>Degree</strong><br>${edu.degree}</p>
+                    </article>
+                `).join("")}
+            </div>
+        `;
+    }
+
+    renderSkillsSectionHTML() {
+        return `
+            <div class="skills-grid">
+                ${Object.entries(this.skillsData).map(([label, items]) => `
+                    <article class="skill-card">
+                        <h3>${label}</h3>
+                        <div class="skill-tags">
+                            ${items.map((item) => `<span class="pill">${item}</span>`).join("")}
+                        </div>
+                    </article>
+                `).join("")}
+            </div>
+        `;
+    }
+
+    renderContactSectionHTML() {
+        return `
+            <div class="contact-grid">
+                <article class="contact-card">
+                    <div class="eyebrow">Reach Out</div>
+                    <h3>Start a conversation</h3>
+                    <div class="contact-links">
+                        <a href="${this.portfolioData.linkedin}" target="_blank" rel="noreferrer">LinkedIn Messages</a>
+                        <a href="resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+                    </div>
+                </article>
+                <article class="contact-card">
+                    <div class="eyebrow">Profiles</div>
+                    <h3>Find me online</h3>
+                    <div class="contact-links">
+                        <a href="${this.portfolioData.github}" target="_blank" rel="noreferrer">GitHub</a>
+                        <a href="${this.portfolioData.linkedin}" target="_blank" rel="noreferrer">LinkedIn</a>
+                        <a href="${this.portfolioData.x}" target="_blank" rel="noreferrer">X</a>
+                    </div>
+                </article>
+            </div>
+        `;
     }
 
     isFullscreenActive() {
-        return this.overlay && this.overlay.classList.contains('active');
+        return this.overlay && this.overlay.classList.contains("active");
     }
 
     handleFullscreenToggle() {
@@ -131,695 +406,422 @@ class PortfolioTerminal {
     }
 
     enterFullscreen() {
-        if (!this.overlay || !this.overlayContent) return;
-        if (this.isFullscreenActive()) return; // already in fullscreen
-        const terminal = this.host.querySelector('.terminal-container');
-        this.placeholder = document.createElement('div');
-        this.placeholder.style.display = 'contents';
-        this.host.insertBefore(this.placeholder, terminal);
-        this.overlayContent.innerHTML = '';
-        this.overlayContent.appendChild(terminal);
-        this.overlay.classList.add('active');
-        if (this.fsToggle) {
-            this.fsToggle.textContent = '✕';
-            this.fsToggle.title = 'Close';
+        if (!this.overlay || !this.overlayContent || this.isFullscreenActive()) {
+            return;
         }
-        this.input.focus();
+
+        const terminal = this.host.querySelector(".terminal-container");
+        this.placeholder = document.createElement("div");
+        this.placeholder.style.display = "contents";
+        this.host.insertBefore(this.placeholder, terminal);
+        this.overlayContent.innerHTML = "";
+        this.overlayContent.appendChild(terminal);
+        this.overlay.classList.add("active");
+
+        if (this.fsToggle) {
+            this.fsToggle.textContent = "✕";
+            this.fsToggle.title = "Close";
+        }
+
+        if (this.input) {
+            this.input.focus();
+        }
     }
 
     exitFullscreen() {
-        if (!this.overlay || !this.overlayContent || !this.placeholder) return;
-        if (!this.isFullscreenActive()) return;
-        const terminal = this.overlayContent.querySelector('.terminal-container');
+        if (!this.overlay || !this.overlayContent || !this.placeholder || !this.isFullscreenActive()) {
+            return;
+        }
+
+        const terminal = this.overlayContent.querySelector(".terminal-container");
         this.host.insertBefore(terminal, this.placeholder);
         this.placeholder.remove();
-        this.overlay.classList.remove('active');
+        this.overlay.classList.remove("active");
+
         if (this.fsToggle) {
-            this.fsToggle.textContent = '⛶';
-            this.fsToggle.title = 'Fullscreen';
-        }
-        this.input.focus();
-    }
-
-    // ---------- Shared renderers ----------
-    renderAboutHTML() {
-        return `
-            <div class="about-details">
-                <div class="detail-line"><span class="success">Name:</span> ${this.portfolioData.name}</div>
-                <div class="detail-line"><span class="success">Title:</span> ${this.portfolioData.title}</div>
-                <div class="detail-line"><span class="success">Location:</span> ${this.portfolioData.location}</div>
-                <div class="detail-line"><span class="success">Experience:</span> 3+ years in Data Science & Engineering</div>
-                <div class="detail-line"><span class="success">Focus Areas:</span> Data Engineering, ML, Analytics, Applied Research</div>
-            </div>
-            <div style="margin-top: 12px;">
-                <a href="resume.pdf" download class="download-btn">⬇️ Download Resume</a>
-            </div>
-        `;
-    }
-
-    renderSkillsHTML() {
-        const s = this.skillsData;
-        const row = (label, items) => `<div class="skill-category"><span class="skill-header">${label}:</span> ${items.join(', ')}</div>`;
-        return `
-            <div class="skills-list">
-                ${row('Programming Languages', s.languages)}
-                ${row('Machine Learning Frameworks', s.ml)}
-                ${row('Data Engineering Technologies', s.dataEng)}
-                ${row('Cloud Platforms', s.cloud)}
-                ${row('Data Visualization & Reporting Tools', s.viz)}
-                ${row('DevOps & MLOps Technologies', s.mlops)}
-                ${row('Additional Technologies', s.misc)}
-            </div>
-        `;
-    }
-
-    renderProjectsHTML(asPre = false) {
-        const blocks = this.projectsData.map(p => {
-            const bullets = p.bullets.map(b => `  • ${b}`).join('\n');
-            return `
-<span class="project-title">${p.title}</span>                          <span class="project-date">${p.date}</span>
-<a href="${p.link}" target="_blank" class="project-link">${p.link}</a>
-${bullets}
-`;
-        }).join('\n');
-
-        if (asPre) {
-            return `<div class="info">Projects</div><pre class="terminal-projects">${blocks}</pre>`;
+            this.fsToggle.textContent = "⛶";
+            this.fsToggle.title = "Fullscreen";
         }
 
-        // Non-terminal rendering
-        return `
-            <div class="terminal-projects">${blocks.replaceAll('\n', '<br>')}</div>
-        `;
-    }
-
-    renderContactHTML() {
-        return `
-            <div class="contact-list">
-                <div class="detail-line"><span class="contact-label">Location:</span> ${this.portfolioData.location}</div>
-                <div class="detail-line"><span class="contact-label">LinkedIn:</span> <a href="${this.portfolioData.linkedin}" target="_blank" class="contact-link">${this.portfolioData.linkedin}</a></div>
-                <div class="detail-line"><span class="contact-label">GitHub:</span> <a href="${this.portfolioData.github}" target="_blank" class="contact-link">${this.portfolioData.github}</a></div>
-                <div class="detail-line"><span class="contact-label">X:</span> <a href="${this.portfolioData.x}" target="_blank" class="contact-link">${this.portfolioData.x}</a></div>
-            </div>
-            <br>
-            <div class="success">Let's connect! I'm always open to discussing opportunities or interesting projects.</div>
-        `;
-    }
-
-    renderSectionsFromData() {
-        const heroTitle = document.getElementById('heroTitle');
-        const heroSubtitle = document.getElementById('heroSubtitle');
-        if (heroTitle) heroTitle.textContent = `Hi, I'm ${this.portfolioData.name.split(' ')[0]}`;
-        if (heroSubtitle) {
-            const loc = this.portfolioData.location || '';
-            const lower = loc.toLowerCase().trim();
-            const needsIn = !(lower.startsWith('in ') || lower.startsWith('at ') || lower.startsWith('on ') || lower.startsWith('somewhere'));
-            heroSubtitle.textContent = `${this.portfolioData.title} based ${needsIn ? 'in ' : ''}${loc}`;
+        if (this.input) {
+            this.input.focus();
         }
-
-        const aboutEl = document.getElementById('aboutSectionContent');
-        const skillsEl = document.getElementById('skillsSectionContent');
-        const projectsEl = document.getElementById('projectsSectionContent');
-        const contactEl = document.getElementById('contactSectionContent');
-        if (aboutEl) aboutEl.innerHTML = this.renderAboutHTML();
-        if (skillsEl) skillsEl.innerHTML = this.renderSkillsHTML();
-        if (projectsEl) projectsEl.innerHTML = this.renderProjectsHTML(false);
-        if (contactEl) contactEl.innerHTML = this.renderContactHTML();
     }
-    
+
     handleKeyDown(event) {
-        switch(event.key) {
-            case 'Enter':
+        switch (event.key) {
+            case "Enter":
                 this.executeCommand();
                 break;
-            case 'ArrowUp':
+            case "ArrowUp":
                 event.preventDefault();
                 this.navigateHistory(-1);
                 break;
-            case 'ArrowDown':
+            case "ArrowDown":
                 event.preventDefault();
                 this.navigateHistory(1);
                 break;
-            case 'Tab':
+            case "Tab":
                 event.preventDefault();
                 this.autoComplete();
                 break;
+            default:
+                break;
         }
     }
-    
+
     executeCommand() {
         const command = this.input.value.trim();
-        if (!command) return;
-        
-        // Add to history
+        if (!command) {
+            return;
+        }
+
         this.commandHistory.push(command);
         this.historyIndex = this.commandHistory.length;
-        
-        // Display command
-        this.addToOutput(`<div class="prompt-spacer"></div><div class="command-line">
-            <span class="command-prompt">-> kushagra@portfolio:~$</span>
-            <span class="command-text">${command}</span>
-        </div>`);
-        
-        // Parse and execute
-        const [cmd, ...args] = command.split(' ');
+
+        this.addToOutput(`
+            <div class="command-line">
+                <span class="command-prompt">-&gt; kushagra@portfolio:~$</span>
+                <span class="command-text">${command}</span>
+            </div>
+        `);
+
+        const [cmd, ...args] = command.split(" ");
         const cmdLower = cmd.toLowerCase();
-        
+
         if (this.commands[cmdLower]) {
             this.commands[cmdLower](args);
         } else {
-            this.addToOutput(`<div class="error">Command not found: ${cmd}. Type 'help' for available commands.</div>`);
+            this.addToOutput(`<div class="detail-line-terminal">command not found: ${cmd}. type 'help' for available commands.</div>`);
         }
-        
-        // Clear input
-        this.input.value = '';
+
+        this.input.value = "";
         this.updateCursorPosition();
         this.scrollToBottom();
     }
-    
+
     navigateHistory(direction) {
-        if (this.commandHistory.length === 0) return;
-        
+        if (!this.commandHistory.length) {
+            return;
+        }
+
         this.historyIndex += direction;
-        
         if (this.historyIndex < 0) {
             this.historyIndex = 0;
         } else if (this.historyIndex >= this.commandHistory.length) {
             this.historyIndex = this.commandHistory.length;
-            this.input.value = '';
+            this.input.value = "";
+            this.updateCursorPosition();
             return;
         }
-        
-        this.input.value = this.commandHistory[this.historyIndex] || '';
+
+        this.input.value = this.commandHistory[this.historyIndex] || "";
         this.updateCursorPosition();
     }
-    
+
     autoComplete() {
         const partial = this.input.value.toLowerCase();
-        const matches = Object.keys(this.commands).filter(cmd => cmd.startsWith(partial));
-        
+        const matches = Object.keys(this.commands).filter((cmd) => cmd.startsWith(partial));
+
         if (matches.length === 1) {
             this.input.value = matches[0];
             this.updateCursorPosition();
         } else if (matches.length > 1) {
-            this.addToOutput(`<div class="info">Available commands: ${matches.join(', ')}</div>`);
+            this.addToOutput(`<div class="detail-line-terminal">available commands: ${matches.join(", ")}</div>`);
+            this.scrollToBottom();
         }
     }
-    
+
     addToOutput(content) {
         this.output.innerHTML += `<div class="command-output">${content}</div>`;
     }
-    
-    scrollToBottom() {
-        const terminalBody = document.querySelector('.terminal-body');
-        terminalBody.scrollTop = terminalBody.scrollHeight;
-    }
-    
-    updateCursorPosition() {
-        const cursor = document.querySelector('.cursor');
-        const prompt = document.querySelector('.prompt');
-        const inputValue = this.input.value;
-        
-        // Calculate cursor position based on input text length
-        const charWidth = 8.4; // Approximate character width in monospace font
-        const promptWidth = prompt.offsetWidth;
-        const textWidth = inputValue.length * charWidth;
-        
-        // Position cursor after the text, not on top of it
-        cursor.style.left = (promptWidth + textWidth + 2) + 'px';
-    }
-    
-    clearTerminal() {
-        this.output.innerHTML = '';
-    }
-    
-    showHelp() {
-        const helpText = `
-            <div class="info">Command Manual (man)</div>
-            <br>
-            <div class="help-section">
-                <div class="help-title">Portfolio Commands</div>
-                <div class="detail-line"><span class="success">about</span> - Display personal information and background</div>
-                <div class="detail-line"><span class="success">skills</span> - Show technical skills and expertise</div>
-                <div class="detail-line"><span class="success">projects</span> - List featured projects and repositories</div>
-                <div class="detail-line"><span class="success">experience</span> - Display work experience and roles</div>
-                <div class="detail-line"><span class="success">education</span> - Show educational background and certifications</div>
-                <div class="detail-line"><span class="success">contact</span> - Display contact information and social links</div>
-                <div class="detail-line"><span class="success">resume</span> - Open resume PDF viewer in popup</div>
-                <div class="detail-line"><span class="success">github</span> - Open GitHub profile in new tab</div>
-                <div class="detail-line"><span class="success">linkedin</span> - Open LinkedIn profile in new tab</div>
-                <div class="detail-line"><span class="success">x</span> - Open X profile in new tab</div>
-                <div class="detail-line"><span class="success">kitty</span> - Display random ASCII art</div>
-            </div>
-            <br>
-            <div class="help-section">
-                <div class="help-title">System Commands</div>
-                <div class="detail-line"><span class="success">help</span> - Display this command manual</div>
-                <div class="detail-line"><span class="success">clear</span> - Clear terminal output</div>
-                <div class="detail-line"><span class="success">date</span> - Show current date and time</div>
-                <div class="detail-line"><span class="success">whoami</span> - Display current user identity</div>
-                <div class="detail-line"><span class="success">pwd</span> - Show current working directory</div>
-                <div class="detail-line"><span class="success">ls</span> - List available files and commands</div>
-                <div class="detail-line"><span class="success">cat [file]</span> - Display contents of specified file</div>
-                <div class="detail-line"><span class="success">echo [text]</span> - Output specified text</div>
-                <div class="detail-line"><span class="success">theme [name]</span> - Change terminal color theme</div>
-            </div>
-            <br>
-            <div class="help-section">
-                <div class="help-title">Navigation & Usage</div>
-                <div class="detail-line"><span class="success">↑/↓</span> - Navigate command history</div>
-                <div class="detail-line"><span class="success">Tab</span> - Auto-complete commands</div>
-                <div class="detail-line"><span class="success">Enter</span> - Execute command</div>
-            </div>
-            <br>
-            <div class="help-section">
-                <div class="help-title">Available Themes</div>
-                <div class="detail-line"><span class="success">matrix</span> - Default green terminal theme</div>
-                <div class="detail-line"><span class="success">cyberpunk</span> - Pink and cyan color scheme</div>
-                <div class="detail-line"><span class="success">retro</span> - Orange and yellow retro theme</div>
-            </div>
-        `;
-        this.addToOutput(helpText);
-    }
-    
-    showAbout() {
-        this.addToOutput(this.renderAboutHTML());
-    }
-    
-    showSkills() {
-        this.addToOutput(this.renderSkillsHTML());
-    }
-    
-    showProjects() {
-        this.addToOutput(this.renderProjectsHTML(true));
-    }
-    
-    showExperience() {
-        const experienceText = `
-<div class="info">Work Experience</div>
-<pre class="terminal-projects">
-<span class="project-title">Data Scientist <span style="font-weight: normal;">New Engen - Seattle, US (Remote)</span></span>                                   <span class="project-date">November 2022 - Present</span>
-<a href="https://www.newengen.com/" target="_blank" class="project-link">https://www.newengen.com/</a>
-  • Architected and deployed advanced AI-powered chatbot systems utilizing multiple large language models (Claude, Gemini) to perform sophisticated reasoning and deliver actionable marketing insights through function calling and optimized content caching.
-  • Designed and maintained robust data pipelines leveraging Adverity, custom Python scripts, dbt, BigQuery, and Cloud SQL on Kubernetes, implementing ETL workflows that enhanced real-time analytics efficiency by approximately 60%.
-  • Conducted comprehensive data analysis on 5 terabytes of marketing data in BigQuery, deriving critical KPIs including spend, revenue, ROAS, CPC, and AOV to inform strategic decision-making.
-  • Developed dynamic and scalable reporting dashboards in Looker Studio, integrating data from diverse sources (GA4, Meta, Google, etc.) to support data-driven decisions, contributing to the <a href="#" onclick="return false;" style="text-decoration: underline;">LIFT</a> SaaS platform.
-  • Engineered machine learning solutions, including a pacing and budgeting forecast system and a recommendation engine, utilizing real-time data analysis to enhance operational efficiency.
 
-<span class="project-title">Data Science Consultant <span style="font-weight: normal;">Kauriink Pvt. Ltd. - New Delhi, India (Remote)</span></span>                                   <span class="project-date">August 2022 - November 2022</span>
-<a href="https://www.techatplay.ai/" target="_blank" class="project-link">https://www.techatplay.ai/</a>
-  • Developed and validated deep learning models for automated player performance analysis using computer vision, achieving 87% accuracy in posture classification (6 classes) and 92% accuracy in shot type classification (8 classes).
-  • Implemented advanced color segmentation and sliding window techniques to optimize object tracking in video data.
-  • Collaborated on the integration of transfer learning models (Mediapipe, YOLO) to accurately detect player posture, movement, ball trajectory, and shot type.
-  • Exhibited exceptional problem-solving and analytical capabilities, applying technical expertise and innovative approaches to deliver high-impact solutions.
-</pre>
-        `;
-        this.addToOutput(experienceText);
+    scrollToBottom() {
+        const terminalBody = document.querySelector(".terminal-body");
+        if (terminalBody) {
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
     }
-    
+
+    updateCursorPosition() {
+        const cursor = document.querySelector(".cursor");
+        const prompt = document.querySelector(".prompt");
+        if (!cursor || !prompt || !this.input) {
+            return;
+        }
+
+        const charWidth = 8.1;
+        const promptWidth = prompt.offsetWidth;
+        const textWidth = this.input.value.length * charWidth;
+        cursor.style.left = `${promptWidth + textWidth + 2}px`;
+    }
+
+    clearTerminal() {
+        this.output.innerHTML = "";
+    }
+
+    showHelp() {
+        this.addToOutput(`
+            <div class="detail-line-terminal">portfolio commands</div>
+            <div class="detail-line-terminal">about, skills, projects, experience, education, contact, resume</div>
+            <div class="detail-line-terminal">external links</div>
+            <div class="detail-line-terminal">github, linkedin, x</div>
+            <div class="detail-line-terminal">system commands</div>
+            <div class="detail-line-terminal">help, clear, date, whoami, pwd, ls, cat [file], echo [text], theme [name], mode, kitty</div>
+            <div class="detail-line-terminal">themes</div>
+            <div class="detail-line-terminal">matrix, cyberpunk, retro</div>
+        `);
+    }
+
+    showAbout() {
+        this.addToOutput(`
+            <div class="detail-line-terminal">${this.portfolioData.name}</div>
+            <div class="detail-line-terminal">${this.portfolioData.title}</div>
+            <div class="detail-line-terminal">location: ${this.portfolioData.location}</div>
+            <div class="detail-line-terminal">focus: ${this.portfolioData.focusAreas.join(", ")}</div>
+            <div class="detail-line-terminal">${this.portfolioData.summary}</div>
+        `);
+    }
+
+    showSkills() {
+        const lines = Object.entries(this.skillsData)
+            .map(([label, items]) => `<div class="skill-category-terminal">${label}: ${items.join(", ")}</div>`)
+            .join("");
+        this.addToOutput(lines);
+    }
+
+    showProjects() {
+        const html = this.projectsData.map((project) => `
+            <div class="terminal-projects">
+                ${project.title} | ${project.date}<br>
+                <a href="${project.link}" target="_blank" rel="noreferrer">${project.link}</a><br>
+                ${project.bullets.map((bullet) => `• ${bullet}`).join("<br>")}
+            </div>
+        `).join("");
+        this.addToOutput(html);
+    }
+
+    showExperience() {
+        const html = this.experienceData.map((item) => `
+            <div class="terminal-projects">
+                ${item.role} | ${item.company}<br>
+                ${item.dates} | ${item.location}<br>
+                <a href="${item.link}" target="_blank" rel="noreferrer">${item.link}</a><br>
+                ${item.bullets.map((bullet) => `• ${bullet}`).join("<br>")}
+            </div>
+        `).join("");
+        this.addToOutput(html);
+    }
+
     showEducation() {
-        const educationText = `
-           <div class="info">Education</div>
-           <pre class="terminal-projects">
-           <span class="project-title">Indian Institute of Information Technology</span>                                   <span class="project-date">Bhopal (India)</span>
-           <span style="display: block; margin-left: 2em;">B.Tech Information Technology</span>
-           </pre>
-        `;
-        this.addToOutput(educationText);
+        const html = this.educationData.map((edu) => `
+            <div class="terminal-projects">
+                ${edu.school}<br>
+                ${edu.degree}
+            </div>
+        `).join("");
+        this.addToOutput(html);
     }
-    
+
     showContact() {
-        this.addToOutput(this.renderContactHTML());
+        this.addToOutput(`
+            <div class="detail-line-terminal">github: <a href="${this.portfolioData.github}" target="_blank" rel="noreferrer">${this.portfolioData.github}</a></div>
+            <div class="detail-line-terminal">linkedin: <a href="${this.portfolioData.linkedin}" target="_blank" rel="noreferrer">${this.portfolioData.linkedin}</a></div>
+            <div class="detail-line-terminal">x: <a href="${this.portfolioData.x}" target="_blank" rel="noreferrer">${this.portfolioData.x}</a></div>
+            <div class="detail-line-terminal">resume: <a href="resume.pdf" target="_blank" rel="noreferrer">resume.pdf</a></div>
+        `);
     }
-    
+
     showResume() {
-        const resumeText = `
-            <div class="info">📄 Resume</div>
-            <br>
-            <div class="success">Opening resume viewer...</div>
-            <div>Click anywhere outside the popup to close it</div>
-        `;
-        this.addToOutput(resumeText);
-        
-        // Create and show PDF viewer popup
+        this.addToOutput(`
+            <div class="detail-line-terminal">opening resume viewer...</div>
+            <div class="detail-line-terminal"><a href="resume.pdf" target="_blank" rel="noreferrer">resume.pdf</a></div>
+        `);
         this.createPDFViewer();
     }
-    
+
     createPDFViewer() {
-        // Remove existing popup if any
-        const existingPopup = document.querySelector('.pdf-popup');
+        const existingPopup = document.querySelector(".pdf-popup");
         if (existingPopup) {
             existingPopup.remove();
         }
 
-        // Create popup overlay
-        const overlay = document.createElement('div');
-        overlay.className = 'pdf-popup';
+        const overlay = document.createElement("div");
+        overlay.className = "pdf-popup";
         overlay.innerHTML = `
             <div class="pdf-popup-content">
                 <div class="pdf-header">
-                    <h3>📄 Kushagra Kaushal - Resume</h3>
+                    <h3>Kushagra Kaushal Resume</h3>
                     <div class="pdf-controls">
-                        <a href="resume.pdf" download class="download-btn">⬇️ Download</a>
-                        <button class="print-btn">🖨️ Print</button>
-                        <button class="close-btn">✕</button>
+                        <a href="resume.pdf" download>Download</a>
+                        <button type="button" class="print-btn">Print</button>
+                        <button type="button" class="close-btn">Close</button>
                     </div>
                 </div>
                 <div class="pdf-viewer">
-                    <iframe src="resume.pdf#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit&pagemode=none"
-                            width="100%"
-                            height="100%"
-                            frameborder="0"
-                            style="border: none; background: #f5f5f5;">
-                        <div style="padding: 20px; text-align: center; font-family: 'Times New Roman', Times, serif;">
-                            <h3>📄 PDF Viewer</h3>
-                            <p>Your browser doesn't support inline PDF viewing.</p>
-                            <p>Click the download button above or <a href="resume.pdf" target="_blank" style="color: #00ff00; text-decoration: none;">open the PDF directly</a></p>
-                            <p style="font-size: 14px; color: #888; margin-top: 10px;">
-                                For best viewing experience, ensure your browser has Times New Roman font installed.<br>
-                                The viewer automatically loads Google Fonts if the local font is unavailable.
-                            </p>
-                        </div>
-                    </iframe>
+                    <iframe src="resume.pdf#toolbar=1&navpanes=0&scrollbar=1" width="100%" height="100%" frameborder="0"></iframe>
                 </div>
             </div>
         `;
 
-        // Add event listeners
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
+        overlay.addEventListener("click", (event) => {
+            if (event.target === overlay) {
                 overlay.remove();
             }
         });
 
-        overlay.querySelector('.close-btn').addEventListener('click', () => {
+        overlay.querySelector(".close-btn").addEventListener("click", () => {
             overlay.remove();
         });
 
-        // Add print functionality
-        const printBtn = overlay.querySelector('.print-btn');
-        if (printBtn) {
-            printBtn.addEventListener('click', () => {
-                const iframe = overlay.querySelector('iframe');
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.print();
-                } else {
-                    // Fallback: open in new window for printing
-                    window.open('resume.pdf', '_blank');
-                }
-            });
-        }
+        overlay.querySelector(".print-btn").addEventListener("click", () => {
+            const frame = overlay.querySelector("iframe");
+            if (frame && frame.contentWindow) {
+                frame.contentWindow.print();
+            } else {
+                window.open("resume.pdf", "_blank", "noopener");
+            }
+        });
 
-        // Enhance PDF viewer with better font support
-        this.enhancePDFViewer(overlay);
-
-        // Add to page
         document.body.appendChild(overlay);
-
-        // Focus the input after a short delay
-        setTimeout(() => {
-            this.input.focus();
-        }, 100);
     }
 
-    enhancePDFViewer(overlay) {
-        const iframe = overlay.querySelector('iframe');
-
-        // Add CSS for better font rendering
-        const style = document.createElement('style');
-        style.textContent = `
-            @font-face {
-                font-family: 'Times New Roman';
-                src: local('Times New Roman'), local('Times'), local('serif');
-                font-display: swap;
-            }
-
-            .pdf-viewer iframe {
-                font-synthesis: none;
-                text-rendering: optimizeLegibility;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                font-feature-settings: "liga" 1, "kern" 1;
-                font-variant-ligatures: common-ligatures;
-            }
-
-            /* Force font rendering for Times */
-            .pdf-viewer * {
-                font-family: 'Times New Roman', Times, serif !important;
-                font-synthesis: none !important;
-                text-rendering: optimizeLegibility !important;
-                -webkit-font-smoothing: antialiased !important;
-                -moz-osx-font-smoothing: grayscale !important;
-                font-feature-settings: "liga" 1, "kern" 1 !important;
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Add font loading detection
-        if ('fonts' in document) {
-            document.fonts.load('16px "Times New Roman"').then(() => {
-                console.log('Times New Roman font loaded successfully');
-            }).catch(() => {
-                console.warn('Times New Roman font not available, loading from Google Fonts');
-                // Load Times New Roman from Google Fonts as fallback
-                const googleFont = document.createElement('link');
-                googleFont.rel = 'stylesheet';
-                googleFont.href = 'https://fonts.googleapis.com/css2?family=Times+New+Roman:ital,wght@0,400;0,700;1,400;1,700&display=swap';
-                document.head.appendChild(googleFont);
-            });
-        }
-
-        // Add better iframe parameters for font rendering
-        if (iframe) {
-            iframe.onload = () => {
-                try {
-                    // Attempt to enhance the iframe content for better font rendering
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    if (iframeDoc) {
-                        const fontStyle = iframeDoc.createElement('style');
-                        fontStyle.textContent = `
-                            * {
-                                font-family: 'Times New Roman', Times, serif !important;
-                                font-synthesis: none !important;
-                                text-rendering: optimizeLegibility !important;
-                                -webkit-font-smoothing: antialiased !important;
-                                -moz-osx-font-smoothing: grayscale !important;
-                            }
-
-                            body {
-                                font-family: 'Times New Roman', Times, serif !important;
-                            }
-                        `;
-                        iframeDoc.head.appendChild(fontStyle);
-                    }
-                } catch (e) {
-                    // Cross-origin restrictions may prevent iframe manipulation
-                    console.log('Could not enhance iframe font rendering due to cross-origin restrictions');
-                }
-            };
-        }
-    }
-    
     openGithub() {
-        const githubText = `
-            <div class="info">🐙 Opening GitHub Profile...</div>
-            <div>Redirecting to: <a href="${this.portfolioData.github}" target="_blank">${this.portfolioData.github}</a></div>
-        `;
-        this.addToOutput(githubText);
-        
-        // Open GitHub in new tab
-        setTimeout(() => {
-            window.open(this.portfolioData.github, '_blank');
-        }, 1000);
+        this.addToOutput(`<div class="detail-line-terminal">opening github: <a href="${this.portfolioData.github}" target="_blank" rel="noreferrer">${this.portfolioData.github}</a></div>`);
+        setTimeout(() => window.open(this.portfolioData.github, "_blank", "noopener"), 300);
     }
-    
+
     openLinkedIn() {
-        const linkedinText = `
-            <div class="info">💼 Opening LinkedIn Profile...</div>
-            <div>Redirecting to: <a href="${this.portfolioData.linkedin}" target="_blank">${this.portfolioData.linkedin}</a></div>
-        `;
-        this.addToOutput(linkedinText);
-        
-        // Open LinkedIn in new tab
-        setTimeout(() => {
-            window.open(this.portfolioData.linkedin, '_blank');
-        }, 1000);
+        this.addToOutput(`<div class="detail-line-terminal">opening linkedin: <a href="${this.portfolioData.linkedin}" target="_blank" rel="noreferrer">${this.portfolioData.linkedin}</a></div>`);
+        setTimeout(() => window.open(this.portfolioData.linkedin, "_blank", "noopener"), 300);
     }
 
     openX() {
-        const xText = `
-            <div class="info">🐦 Opening X Profile...</div>
-            <div>Redirecting to: <a href="${this.portfolioData.x}" target="_blank">${this.portfolioData.x}</a></div>
-        `;
-        this.addToOutput(xText);
+        this.addToOutput(`<div class="detail-line-terminal">opening x: <a href="${this.portfolioData.x}" target="_blank" rel="noreferrer">${this.portfolioData.x}</a></div>`);
+        setTimeout(() => window.open(this.portfolioData.x, "_blank", "noopener"), 300);
+    }
 
-        // Open X in new tab
-        setTimeout(() => {
-            window.open(this.portfolioData.x, '_blank');
-        }, 1000);
-    }
-    
     showDate() {
-        const now = new Date();
-        const dateText = `<div class="info">${now.toLocaleDateString()} ${now.toLocaleTimeString()}</div>`;
-        this.addToOutput(dateText);
+        this.addToOutput(`<div class="detail-line-terminal">${new Date().toLocaleString()}</div>`);
     }
-    
+
     whoami() {
-        this.addToOutput(`<div class="success">${this.portfolioData.name} - ${this.portfolioData.title}</div>`);
+        this.addToOutput(`<div class="detail-line-terminal">${this.portfolioData.name} - ${this.portfolioData.title}</div>`);
     }
-    
+
     listFiles() {
-        const filesText = `
-            <div class="info">Directory listing:</div>
-            <div>-rw-r--r--  about.txt</div>
-            <div>-rw-r--r--  skills.txt</div>
-            <div>-rw-r--r--  projects.txt</div>
-            <div>-rw-r--r--  experience.txt</div>
-            <div>-rw-r--r--  education.txt</div>
-            <div>-rw-r--r--  contact.txt</div>
-            <div>-rw-r--r--  resume.pdf</div>
-        `;
-        this.addToOutput(filesText);
+        this.addToOutput(`
+            <div class="detail-line-terminal">about.txt</div>
+            <div class="detail-line-terminal">skills.txt</div>
+            <div class="detail-line-terminal">projects.txt</div>
+            <div class="detail-line-terminal">experience.txt</div>
+            <div class="detail-line-terminal">education.txt</div>
+            <div class="detail-line-terminal">contact.txt</div>
+            <div class="detail-line-terminal">resume.pdf</div>
+        `);
     }
-    
+
     catFile(args) {
-        if (args.length === 0) {
-            this.addToOutput('<div class="error">Usage: cat [filename]</div>');
+        if (!args.length) {
+            this.addToOutput(`<div class="detail-line-terminal">usage: cat [filename]</div>`);
             return;
         }
-        
-        const filename = args[0].toLowerCase();
+
         const fileMap = {
-            'about.txt': () => this.showAbout(),
-            'skills.txt': () => this.showSkills(),
-            'projects.txt': () => this.showProjects(),
-            'experience.txt': () => this.showExperience(),
-            'education.txt': () => this.showEducation(),
-            'contact.txt': () => this.showContact()
+            "about.txt": () => this.showAbout(),
+            "skills.txt": () => this.showSkills(),
+            "projects.txt": () => this.showProjects(),
+            "experience.txt": () => this.showExperience(),
+            "education.txt": () => this.showEducation(),
+            "contact.txt": () => this.showContact()
         };
-        
+
+        const filename = args[0].toLowerCase();
         if (fileMap[filename]) {
             fileMap[filename]();
         } else {
-            this.addToOutput(`<div class="error">cat: ${filename}: No such file or directory</div>`);
+            this.addToOutput(`<div class="detail-line-terminal">cat: ${filename}: no such file or directory</div>`);
         }
     }
-    
+
     showPwd() {
-        this.addToOutput('<div class="info">/home/kushagra/portfolio</div>');
+        this.addToOutput(`<div class="detail-line-terminal">/home/kushagra/portfolio</div>`);
     }
-    
+
     echo(args) {
-        const text = args.join(' ');
-        this.addToOutput(`<div>${text}</div>`);
+        this.addToOutput(`<div class="detail-line-terminal">${args.join(" ")}</div>`);
     }
-    
+
+    showModeHelp() {
+        const mode = this.body.dataset.mode;
+        this.addToOutput(`<div class="detail-line-terminal">current mode: ${mode}. use the top switch to move between normal and tech views.</div>`);
+    }
+
     changeTheme(args) {
-        if (args.length === 0) {
-            this.addToOutput('<div class="info">Available themes: matrix (default), cyberpunk, retro</div>');
+        if (!args.length) {
+            this.addToOutput(`<div class="detail-line-terminal">available themes: matrix, cyberpunk, retro</div>`);
             return;
         }
-        
+
         const theme = args[0].toLowerCase();
         const root = document.documentElement;
-        
-        switch(theme) {
-            case 'matrix':
-                root.style.setProperty('--primary-color', '#00ff00');
-                root.style.setProperty('--secondary-color', '#00cc00');
-                root.style.setProperty('--accent-color', '#00ffff');
-                root.style.setProperty('--text-color', '#00ff00');
-                root.style.setProperty('--primary-color-rgb', '0, 255, 0');
-                root.style.setProperty('--bg-gradient-1', '#0D180A');
-                root.style.setProperty('--bg-gradient-2', '#0D180A');
-                // Force update body background
-                document.body.style.background = 'linear-gradient(45deg, #0D180A, #0D180A)';
-                // Update terminal container background
-                document.querySelector('.terminal-container').style.background = 'rgba(13, 24, 10, 0.95)';
-                this.addToOutput('<div class="success">Theme changed to Matrix (Green)</div>');
+        const terminal = document.querySelector(".terminal-container");
+        const setTerminalBg = (value) => {
+            if (terminal) {
+                terminal.style.background = value;
+            }
+        };
+
+        switch (theme) {
+            case "matrix":
+                root.style.setProperty("--accent", "#57ff87");
+                root.style.setProperty("--accent-strong", "#bbffd3");
+                this.addToOutput(`<div class="detail-line-terminal">theme changed to matrix</div>`);
+                setTerminalBg("rgba(9, 17, 11, 0.95)");
                 break;
-            case 'cyberpunk':
-                root.style.setProperty('--primary-color', '#ff0080');
-                root.style.setProperty('--secondary-color', '#ff0080');
-                root.style.setProperty('--accent-color', '#00ffff');
-                root.style.setProperty('--text-color', '#ff0080');
-                root.style.setProperty('--primary-color-rgb', '255, 0, 128');
-                root.style.setProperty('--bg-gradient-1', '#0a0a14');
-                root.style.setProperty('--bg-gradient-2', '#0a0a14');
-                // Force update body background
-                document.body.style.background = 'linear-gradient(45deg, #0a0a14, #0a0a14)';
-                // Update terminal container background
-                document.querySelector('.terminal-container').style.background = 'rgba(10, 10, 20, 0.95)';
-                this.addToOutput('<div class="success">Theme changed to Cyberpunk (Pink)</div>');
+            case "cyberpunk":
+                root.style.setProperty("--accent", "#ff4db8");
+                root.style.setProperty("--accent-strong", "#7ef9ff");
+                this.addToOutput(`<div class="detail-line-terminal">theme changed to cyberpunk</div>`);
+                setTerminalBg("rgba(15, 8, 18, 0.95)");
                 break;
-            case 'retro':
-                root.style.setProperty('--primary-color', '#ffaa00');
-                root.style.setProperty('--secondary-color', '#ff6600');
-                root.style.setProperty('--accent-color', '#ffff00');
-                root.style.setProperty('--text-color', '#ffaa00');
-                root.style.setProperty('--primary-color-rgb', '255, 120, 0');
-                root.style.setProperty('--bg-gradient-1', '#1a0f00');
-                root.style.setProperty('--bg-gradient-2', '#1a0f00');
-                // Force update body background
-                document.body.style.background = 'linear-gradient(45deg, #1a0f00, #1a0f00)';
-                // Update terminal container background
-                document.querySelector('.terminal-container').style.background = 'rgba(26, 15, 0, 0.95)';
-                this.addToOutput('<div class="success">Theme changed to Retro (Orange)</div>');
+            case "retro":
+                root.style.setProperty("--accent", "#ffb347");
+                root.style.setProperty("--accent-strong", "#ffe39b");
+                this.addToOutput(`<div class="detail-line-terminal">theme changed to retro</div>`);
+                setTerminalBg("rgba(24, 15, 7, 0.95)");
                 break;
             default:
-                this.addToOutput('<div class="error">Theme not found. Available: matrix, cyberpunk, retro</div>');
+                this.addToOutput(`<div class="detail-line-terminal">theme not found. available: matrix, cyberpunk, retro</div>`);
         }
     }
 
     showKitty() {
-        // Fetch ASCII art collection
-        fetch('ascii_art_simple.json')
-            .then(response => {
+        fetch("ascii_art_simple.json")
+            .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Failed to load ASCII art collection');
+                    throw new Error("failed to load ascii_art_simple.json");
                 }
                 return response.json();
             })
-            .then(data => {
-                const pieces = data.pieces;
-                if (pieces.length === 0) {
-                    this.addToOutput('<div class="error">🐱 No ASCII art pieces found!</div>');
-                    return;
+            .then((data) => {
+                if (!data.pieces || !data.pieces.length) {
+                    throw new Error("ascii collection is empty");
                 }
-
-                // Select random piece
-                const randomIndex = Math.floor(Math.random() * pieces.length);
-                const randomPiece = pieces[randomIndex];
-
-                // Decode base64
-                try {
-                    const decodedArt = atob(randomPiece.base64_encoded);
-
-                    // Display the ASCII art
-                    const artDisplay = `
-                        <div class="info">🐱 Random ASCII Art (Piece #${randomPiece.id}/${pieces.length})</div>
-                        <br>
-                        <div class="ascii-art">
-                            <pre>${decodedArt}</pre>
-                        </div>
-                        <br>
-                        <div class="success">Meow! Type 'kitty' again for another cute ASCII art! 🐾</div>
-                    `;
-
-                    this.addToOutput(artDisplay);
-                } catch (error) {
-                    this.addToOutput(`<div class="error">🐱 Oops! Error decoding ASCII art: ${error.message}</div>`);
-                }
+                const item = data.pieces[Math.floor(Math.random() * data.pieces.length)];
+                const decoded = atob(item.base64_encoded);
+                this.addToOutput(`
+                    <div class="detail-line-terminal">kitty #${item.id}</div>
+                    <pre class="ascii-art">${decoded}</pre>
+                `);
+                this.scrollToBottom();
             })
-            .catch(error => {
-                this.addToOutput(`<div class="error">🐱 Failed to load ASCII art collection: ${error.message}</div>`);
-                this.addToOutput('<div>Make sure ascii_art_simple.json is in the same directory as the HTML file.</div>');
+            .catch((error) => {
+                this.addToOutput(`<div class="detail-line-terminal">${error.message}</div>`);
             });
     }
 }
 
-// Initialize the terminal when the page loads
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     new PortfolioTerminal();
 });
