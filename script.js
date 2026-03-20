@@ -4,7 +4,7 @@ class PortfolioTerminal {
         this.body = document.body;
         this.input = document.getElementById("commandInput");
         this.output = document.getElementById("output");
-        this.modeToggle = document.getElementById("modeToggle");
+        this.modeButtons = Array.from(document.querySelectorAll("[data-mode-option]"));
         this.host = document.getElementById("terminalHost");
         this.overlay = document.getElementById("terminalOverlay");
         this.overlayContent = document.getElementById("terminalOverlayContent");
@@ -142,6 +142,9 @@ class PortfolioTerminal {
         this.renderSpotlight();
         this.bindEvents();
         this.updateCursorPosition();
+        requestAnimationFrame(() => {
+            this.body.classList.add("is-ready");
+        });
     }
 
     bindEvents() {
@@ -161,11 +164,11 @@ class PortfolioTerminal {
             }
         });
 
-        if (this.modeToggle) {
-            this.modeToggle.addEventListener("change", () => {
-                this.setMode(this.modeToggle.checked ? "tech" : "normal");
+        this.modeButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                this.setMode(button.dataset.modeOption);
             });
-        }
+        });
 
         const fsToggle = document.getElementById("terminalFullscreenToggle");
         const backdrop = document.getElementById("terminalOverlayBackdrop");
@@ -199,9 +202,11 @@ class PortfolioTerminal {
 
     setMode(mode, persist = true) {
         this.body.dataset.mode = mode;
-        if (this.modeToggle) {
-            this.modeToggle.checked = mode === "tech";
-        }
+        this.modeButtons.forEach((button) => {
+            const active = button.dataset.modeOption === mode;
+            button.classList.toggle("is-active", active);
+            button.setAttribute("aria-selected", active ? "true" : "false");
+        });
         if (persist) {
             localStorage.setItem(this.storageKey, mode);
         }
@@ -235,20 +240,27 @@ class PortfolioTerminal {
 
         spotlight.innerHTML = `
             <div class="spotlight-grid">
-                <article class="spotlight-card">
-                    <div class="eyebrow">What I Do</div>
-                    <h3>From raw data to production decisions</h3>
+                <article class="spotlight-hero">
+                    <div class="eyebrow">Selected Focus</div>
+                    <h3>Building systems that turn messy data into useful decisions.</h3>
                     <p>${this.portfolioData.summary}</p>
+                    <div class="spotlight-pills">
+                        ${this.portfolioData.focusAreas.map((item) => `<span class="pill">${item}</span>`).join("")}
+                    </div>
                 </article>
-                <article class="spotlight-card">
-                    <div class="eyebrow">Focus</div>
+                <article class="spotlight-card spotlight-stat">
+                    <div class="eyebrow">Scale</div>
+                    <h3>5 TB+</h3>
+                    <p>Worked across large marketing datasets, production pipelines, analytics reporting, and model-driven workflows.</p>
+                </article>
+                <article class="spotlight-card spotlight-mini">
+                    <div class="eyebrow">Mode Aware</div>
+                    <p>Normal mode is cleaner for recruiters and clients. Tech mode keeps the terminal front and center for technical visitors.</p>
                     <ul class="spotlight-list">
-                        ${this.portfolioData.focusAreas.map((item) => `<li>${item}</li>`).join("")}
+                        <li>Command-driven exploration</li>
+                        <li>Full project and experience detail</li>
+                        <li>Same content, two interaction styles</li>
                     </ul>
-                </article>
-                <article class="spotlight-card">
-                    <div class="eyebrow">For Technical Visitors</div>
-                    <p>Switch to tech mode to explore the same portfolio through an interactive terminal with commands like <span class="pill">help</span>, <span class="pill">projects</span>, and <span class="pill">experience</span>.</p>
                 </article>
             </div>
         `;

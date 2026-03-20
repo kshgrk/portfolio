@@ -35,15 +35,14 @@
                 <a href="#contact">Contact</a>
             </nav>
 
-            <div class="mode-switcher" role="group" aria-label="Website mode switcher">
-                <span class="mode-label">Normal</span>
-                <label class="mode-toggle" for="modeToggle">
-                    <input id="modeToggle" type="checkbox" aria-label="Toggle between normal and tech mode">
-                    <span class="mode-track">
-                        <span class="mode-thumb"></span>
-                    </span>
-                </label>
-                <span class="mode-label">Tech</span>
+            <div class="mode-switcher" role="tablist" aria-label="Website mode switcher">
+                <span class="mode-slider" aria-hidden="true"></span>
+                <button class="mode-option is-active" type="button" data-mode-option="normal" role="tab" aria-selected="true">
+                    Normal
+                </button>
+                <button class="mode-option" type="button" data-mode-option="tech" role="tab" aria-selected="false">
+                    Tech
+                </button>
             </div>
         </div>
     </header>
