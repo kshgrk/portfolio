@@ -1,3 +1,4 @@
+// Why do programmers prefer dark mode? Because light attracts bugs.
 class PortfolioTerminal {
     constructor() {
         this.storageKey = "portfolio-mode";
