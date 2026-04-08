@@ -834,6 +834,7 @@ class PortfolioTerminal {
     }
 }
 
+// If you're reading this, congrats — you found the secret layer of the terminal 🐱
 document.addEventListener("DOMContentLoaded", () => {
     new PortfolioTerminal();
 });
