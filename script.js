@@ -33,7 +33,7 @@ class PortfolioTerminal {
         
         this.portfolioData = {
             name: "Kushagra Kaushal",
-            title: "Data Scientist & Engineer",
+            title: "AI Engineer",
             location: "Somewhere in India",
             github: "https://github.com/kshgrk",
             linkedin: "https://linkedin.com/in/kshgrk",
@@ -168,7 +168,7 @@ class PortfolioTerminal {
                 <div class="detail-line"><span class="success">Name:</span> ${this.portfolioData.name}</div>
                 <div class="detail-line"><span class="success">Title:</span> ${this.portfolioData.title}</div>
                 <div class="detail-line"><span class="success">Location:</span> ${this.portfolioData.location}</div>
-                <div class="detail-line"><span class="success">Experience:</span> 3+ years in Data Science & Engineering</div>
+                <div class="detail-line"><span class="success">Experience:</span> 4+ years in AI Engineering</div>
                 <div class="detail-line"><span class="success">Focus Areas:</span> Data Engineering, ML, Analytics, Applied Research</div>
             </div>
             <div style="margin-top: 12px;">
@@ -418,7 +418,7 @@ ${bullets}
         const experienceText = `
 <div class="info">Work Experience</div>
 <pre class="terminal-projects">
-<span class="project-title">Data Scientist <span style="font-weight: normal;">New Engen - Seattle, US (Remote)</span></span>                                   <span class="project-date">November 2022 - Present</span>
+<span class="project-title">AI Engineer <span style="font-weight: normal;">New Engen - Seattle, US (Remote)</span></span>                                   <span class="project-date">November 2022 - Present</span>
 <a href="https://www.newengen.com/" target="_blank" class="project-link">https://www.newengen.com/</a>
   • Architected and deployed advanced AI-powered chatbot systems utilizing multiple large language models (Claude, Gemini) to perform sophisticated reasoning and deliver actionable marketing insights through function calling and optimized content caching.
   • Designed and maintained robust data pipelines leveraging Adverity, custom Python scripts, dbt, BigQuery, and Cloud SQL on Kubernetes, implementing ETL workflows that enhanced real-time analytics efficiency by approximately 60%.
