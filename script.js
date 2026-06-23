@@ -39,6 +39,7 @@ class PortfolioTerminal {
             linkedin: "https://linkedin.com/in/kshgrk",
             x: "https://x.com/kshgrk"
         };
+        this.resumeVersion = '20260623-1';
         this.skillsData = {
             languages: ["Python", "TypeScript", "JavaScript", "C++", "C"],
             ml: ["LLM Agents", "Agent Harnesses", "Tool Calling", "MCP", "RAG/GraphRAG", "Model Routing", "Scikit-learn", "TensorFlow", "PyTorch", "Computer Vision", "NLP"],
@@ -98,7 +99,7 @@ class PortfolioTerminal {
                 ]
             },
             {
-                role: "Data Scientist",
+                role: "AI and Data Engineer",
                 company: "New Engen",
                 location: "Seattle, US (Remote)",
                 date: "November 2022 - March 2026",
@@ -204,6 +205,10 @@ class PortfolioTerminal {
     }
 
     // ---------- Shared renderers ----------
+    getResumeUrl() {
+        return `resume.pdf?v=${this.resumeVersion}`;
+    }
+
     renderAboutHTML() {
         return `
             <div class="about-details">
@@ -214,7 +219,7 @@ class PortfolioTerminal {
                 <div class="detail-line"><span class="success">Focus Areas:</span> AI platforms, agent runtimes, tool-calling systems, cloud-native infrastructure</div>
             </div>
             <div style="margin-top: 12px;">
-                <a href="resume.pdf" download class="download-btn">⬇️ Download Resume</a>
+                <a href="${this.getResumeUrl()}" download="Kushagra_Kaushal_Resume.pdf" class="download-btn">⬇️ Download Resume</a>
             </div>
         `;
     }
@@ -542,13 +547,13 @@ ${bullets}
                 <div class="pdf-header">
                     <h3>📄 Kushagra Kaushal - Resume</h3>
                     <div class="pdf-controls">
-                        <a href="resume.pdf" download class="download-btn">⬇️ Download</a>
+                        <a href="${this.getResumeUrl()}" download="Kushagra_Kaushal_Resume.pdf" class="download-btn">⬇️ Download</a>
                         <button class="print-btn">🖨️ Print</button>
                         <button class="close-btn">✕</button>
                     </div>
                 </div>
                 <div class="pdf-viewer">
-                    <iframe src="resume.pdf#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit&pagemode=none"
+                    <iframe src="${this.getResumeUrl()}#toolbar=1&navpanes=1&scrollbar=1&view=FitH&zoom=page-fit&pagemode=none"
                             width="100%"
                             height="100%"
                             frameborder="0"
@@ -556,7 +561,7 @@ ${bullets}
                         <div style="padding: 20px; text-align: center; font-family: 'Times New Roman', Times, serif;">
                             <h3>📄 PDF Viewer</h3>
                             <p>Your browser doesn't support inline PDF viewing.</p>
-                            <p>Click the download button above or <a href="resume.pdf" target="_blank" style="color: #00ff00; text-decoration: none;">open the PDF directly</a></p>
+                            <p>Click the download button above or <a href="${this.getResumeUrl()}" target="_blank" style="color: #00ff00; text-decoration: none;">open the PDF directly</a></p>
                             <p style="font-size: 14px; color: #888; margin-top: 10px;">
                                 For best viewing experience, ensure your browser has Times New Roman font installed.<br>
                                 The viewer automatically loads Google Fonts if the local font is unavailable.
@@ -587,7 +592,7 @@ ${bullets}
                     iframe.contentWindow.print();
                 } else {
                     // Fallback: open in new window for printing
-                    window.open('resume.pdf', '_blank');
+                    window.open(this.getResumeUrl(), '_blank');
                 }
             });
         }
