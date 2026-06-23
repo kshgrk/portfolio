@@ -33,20 +33,20 @@ class PortfolioTerminal {
         
         this.portfolioData = {
             name: "Kushagra Kaushal",
-            title: "AI Engineer",
-            location: "Somewhere in India",
+            title: "Member of Technical Staff",
+            location: "Mumbai, India",
             github: "https://github.com/kshgrk",
             linkedin: "https://linkedin.com/in/kshgrk",
             x: "https://x.com/kshgrk"
         };
         this.skillsData = {
-            languages: ["Python", "C++", "C"],
-            ml: ["Scikit-learn", "TensorFlow", "PyTorch", "Deep Learning", "Computer Vision", "NLP"],
-            dataEng: ["dbt", "Apache Airflow", "BigQuery", "Cloud SQL"],
-            cloud: ["GCP", "AWS"],
+            languages: ["Python", "TypeScript", "JavaScript", "C++", "C"],
+            ml: ["LLM Agents", "Agent Harnesses", "Tool Calling", "MCP", "RAG/GraphRAG", "Model Routing", "Scikit-learn", "TensorFlow", "PyTorch", "Computer Vision", "NLP"],
+            dataEng: ["dbt", "Apache Airflow", "Google BigQuery", "Cloud SQL"],
+            cloud: ["Google Cloud Platform", "Amazon Web Services", "Cloudflare Workers", "Cloudflare AI Gateway"],
             viz: ["Looker Studio", "Plotly", "Dash"],
-            mlops: ["Kubernetes", "Docker", "Devtron CI/CD"],
-            misc: ["Linux", "MySQL", "Bash", "FastAPI", "Flask", "Django"]
+            mlops: ["Kubernetes", "Docker", "Devtron CI/CD", "Isolated Execution"],
+            misc: ["Linux", "MySQL", "Bash", "Node.js", "FastAPI", "Flask", "Django", "OAuth", "Webhooks"]
         };
         this.projectsData = [
             {
@@ -54,21 +54,21 @@ class PortfolioTerminal {
                 link: "https://github.com/kshgrk/obelisk",
                 date: "Ongoing",
                 bullets: [
-                    "Real-time chat app using Temporal workflows and OpenRouter models",
-                    "FastAPI proxy/backend, Vanilla JS frontend, SQLite persistence",
-                    "Extensible registry for tools and model management",
-                    "Robust retries and concurrent sessions"
+                    "Real-time chat app using Temporal workflows for fault-tolerant orchestration",
+                    "Supports dynamic model switching with OpenRouter-hosted open models without losing context",
+                    "FastAPI proxy/backend, Vanilla JavaScript frontend, SQLite persistence",
+                    "Extensible tool registry for runtime integrations like calculators and weather APIs"
                 ]
             },
             {
                 title: "IntelliCodebase",
                 link: "https://github.com/kshgrk/IntelliCodebase.git",
-                date: "Jun 2025",
+                date: "Jan 2025",
                 bullets: [
-                    "LLM-powered codebase analysis and modernization",
-                    "Bash/Python tooling for refactors and linting",
-                    "Smart caching for large repositories",
-                    "Selective file analysis and targeted fixes"
+                    "Gemini-powered codebase analysis and modification system",
+                    "Function calling with Bash and Python for system-level actions",
+                    "Optimized caching for large repositories",
+                    "Selective analysis with targeted issue detection and fixes"
                 ]
             },
             {
@@ -76,8 +76,8 @@ class PortfolioTerminal {
                 link: "https://github.com/kshgrk/LSMTree-AVL.git",
                 date: "Nov 2024",
                 bullets: [
-                    "Python LSM-tree with AVL in-memory index",
-                    "Bloom filter, WAL, SSTables, compaction"
+                    "Python LSM-tree database with AVL-backed memtable and index management",
+                    "Bloom filter, WAL, SSTables, and multi-threaded compaction"
                 ]
             }
         ];
@@ -168,8 +168,8 @@ class PortfolioTerminal {
                 <div class="detail-line"><span class="success">Name:</span> ${this.portfolioData.name}</div>
                 <div class="detail-line"><span class="success">Title:</span> ${this.portfolioData.title}</div>
                 <div class="detail-line"><span class="success">Location:</span> ${this.portfolioData.location}</div>
-                <div class="detail-line"><span class="success">Experience:</span> 4+ years in AI Engineering</div>
-                <div class="detail-line"><span class="success">Focus Areas:</span> Data Engineering, ML, Analytics, Applied Research</div>
+                <div class="detail-line"><span class="success">Experience:</span> 3+ years across agentic AI, data engineering, ML, analytics, and applied research</div>
+                <div class="detail-line"><span class="success">Focus Areas:</span> AI platforms, agent runtimes, tool-calling systems, cloud-native infrastructure</div>
             </div>
             <div style="margin-top: 12px;">
                 <a href="resume.pdf" download class="download-btn">⬇️ Download Resume</a>
@@ -418,20 +418,24 @@ ${bullets}
         const experienceText = `
 <div class="info">Work Experience</div>
 <pre class="terminal-projects">
-<span class="project-title">AI Engineer <span style="font-weight: normal;">New Engen - Seattle, US (Remote)</span></span>                                   <span class="project-date">November 2022 - Present</span>
+<span class="project-title">Member of Technical Staff <span style="font-weight: normal;">Zonko Labs - Mumbai, India (Onsite)</span></span>                                   <span class="project-date">April 2026 - Present</span>
+  • Building Harbor, an AI workbench and integration platform that lets agents access tools across MCP, APIs, and CLIs through a unified plugin architecture and execution layer.
+  • Designed Harbor’s CodeMode execution layer for JavaScript/TypeScript-style tool calling across complex multi-step agent tasks.
+  • Developed runtime and plugin infrastructure on Cloudflare Workers and AI Gateway, covering tool discovery, OAuth connections, secrets/policy handling, model routing, skills, and reusable workflows.
+  • Building Luffy, an AI coworker for knowledge-work teams, with persistent execution flows, workspace context, and Harbor-backed integrations.
+
+<span class="project-title">Data Scientist <span style="font-weight: normal;">New Engen - Seattle, US (Remote)</span></span>                                   <span class="project-date">November 2022 - March 2026</span>
 <a href="https://www.newengen.com/" target="_blank" class="project-link">https://www.newengen.com/</a>
-  • Architected and deployed advanced AI-powered chatbot systems utilizing multiple large language models (Claude, Gemini) to perform sophisticated reasoning and deliver actionable marketing insights through function calling and optimized content caching.
-  • Designed and maintained robust data pipelines leveraging Adverity, custom Python scripts, dbt, BigQuery, and Cloud SQL on Kubernetes, implementing ETL workflows that enhanced real-time analytics efficiency by approximately 60%.
-  • Conducted comprehensive data analysis on 5 terabytes of marketing data in BigQuery, deriving critical KPIs including spend, revenue, ROAS, CPC, and AOV to inform strategic decision-making.
-  • Developed dynamic and scalable reporting dashboards in Looker Studio, integrating data from diverse sources (GA4, Meta, Google, etc.) to support data-driven decisions, contributing to the <a href="#" onclick="return false;" style="text-decoration: underline;">LIFT</a> SaaS platform.
-  • Engineered machine learning solutions, including a pacing and budgeting forecast system and a recommendation engine, utilizing real-time data analysis to enhance operational efficiency.
+  • Architected Lift AI, a real-time distributed chatbot platform with multi-agent reasoning, tool calling, and GraphRAG-based retrieval.
+  • Built scalable data infrastructure with Adverity, dbt, BigQuery, and Postgres on CloudSQL to unify 5TB+ of marketing data.
+  • Developed OLAP pipelines using Airflow and BigQuery for real-time and scheduled analytics workloads.
+  • Delivered production models such as marketing mix modeling and revenue forecasting for budget optimization and ROI improvement.
 
 <span class="project-title">Data Science Consultant <span style="font-weight: normal;">Kauriink Pvt. Ltd. - New Delhi, India (Remote)</span></span>                                   <span class="project-date">August 2022 - November 2022</span>
 <a href="https://www.techatplay.ai/" target="_blank" class="project-link">https://www.techatplay.ai/</a>
-  • Developed and validated deep learning models for automated player performance analysis using computer vision, achieving 87% accuracy in posture classification (6 classes) and 92% accuracy in shot type classification (8 classes).
-  • Implemented advanced color segmentation and sliding window techniques to optimize object tracking in video data.
-  • Collaborated on the integration of transfer learning models (Mediapipe, YOLO) to accurately detect player posture, movement, ball trajectory, and shot type.
-  • Exhibited exceptional problem-solving and analytical capabilities, applying technical expertise and innovative approaches to deliver high-impact solutions.
+  • Developed and validated deep learning models for automated player performance analysis using computer vision.
+  • Implemented color segmentation and sliding window techniques to optimize object tracking in video data.
+  • Integrated transfer learning models like Mediapipe and YOLO for posture, movement, ball trajectory, and shot classification.
 </pre>
         `;
         this.addToOutput(experienceText);
@@ -441,7 +445,7 @@ ${bullets}
         const educationText = `
            <div class="info">Education</div>
            <pre class="terminal-projects">
-           <span class="project-title">Indian Institute of Information Technology</span>                                   <span class="project-date">Bhopal (India)</span>
+           <span class="project-title">Indian Institute of Information Technology Bhopal</span>                                   <span class="project-date">Bhopal, India</span>
            <span style="display: block; margin-left: 2em;">B.Tech Information Technology</span>
            </pre>
         `;
