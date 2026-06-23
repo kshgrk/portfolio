@@ -90,12 +90,12 @@ class PortfolioTerminal {
                 date: "April 2026 - Present",
                 link: "",
                 bullets: [
-                    "Building Harbor, an AI workbench and integration platform that lets agents access tools across MCP, APIs, and CLIs through a unified plugin architecture and execution layer.",
-                    "Designed Harbor’s CodeMode execution layer using JavaScript/TypeScript-style tool calling, enabling tools to be composed, piped, and reused reliably across complex multi-step agent tasks.",
-                    "Developed Harbor’s runtime and plugin system on Cloudflare Workers and AI Gateway, covering tool discovery, OAuth-based connections, secrets/policy handling, model routing, skills, and reusable scripts/workflows.",
+                    "Performed FDE work by meeting clients, translating use cases and feedback into integration scope, and shaping the Harbor/Luffy product roadmap.",
                     "Building Luffy, an AI coworker for knowledge-work teams, with workspace context, skills/scripts management, persistent execution flows, and Harbor-backed integrations for tool use.",
                     "Architected Luffy runtime paths on Cloudflare Workers and Sandboxes for scalable request handling, isolated sessions, and ad-hoc or compute-heavy agent workloads.",
-                    "Performed FDE work by meeting clients, translating use cases and feedback into integration scope, and shaping the Harbor/Luffy product roadmap."
+                    "Building Harbor, an AI workbench and integration platform that lets agents access tools across MCP, APIs, and CLIs through a unified plugin architecture and execution layer.",
+                    "Designed Harbor’s CodeMode execution layer using JavaScript/TypeScript-style tool calling, enabling tools to be composed, piped, and reused reliably across complex multi-step agent tasks.",
+                    "Developed Harbor’s runtime and plugin system on Cloudflare Workers and AI Gateway, covering tool discovery, OAuth-based connections, secrets/policy handling, model routing, skills, and reusable scripts/workflows."
                 ]
             },
             {
