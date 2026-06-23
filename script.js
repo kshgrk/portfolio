@@ -81,6 +81,48 @@ class PortfolioTerminal {
                 ]
             }
         ];
+        this.experienceData = [
+            {
+                role: "Member of Technical Staff",
+                company: "Zonko Labs",
+                location: "Mumbai, India (Onsite)",
+                date: "April 2026 - Present",
+                link: "",
+                bullets: [
+                    "Building Harbor, an AI workbench and integration platform that lets agents access tools across MCP, APIs, and CLIs through a unified plugin architecture and execution layer.",
+                    "Designed Harbor’s CodeMode execution layer using JavaScript/TypeScript-style tool calling, enabling tools to be composed, piped, and reused reliably across complex multi-step agent tasks.",
+                    "Developed Harbor’s runtime and plugin system on Cloudflare Workers and AI Gateway, covering tool discovery, OAuth-based connections, secrets/policy handling, model routing, skills, and reusable scripts/workflows.",
+                    "Building Luffy, an AI coworker for knowledge-work teams, with workspace context, skills/scripts management, persistent execution flows, and Harbor-backed integrations for tool use.",
+                    "Architected Luffy runtime paths on Cloudflare Workers and Sandboxes for scalable request handling, isolated sessions, and ad-hoc or compute-heavy agent workloads.",
+                    "Performed FDE work by meeting clients, translating use cases and feedback into integration scope, and shaping the Harbor/Luffy product roadmap."
+                ]
+            },
+            {
+                role: "Data Scientist",
+                company: "New Engen",
+                location: "Seattle, US (Remote)",
+                date: "November 2022 - March 2026",
+                link: "https://www.newengen.com/",
+                bullets: [
+                    "Architected Lift AI, a real-time distributed chatbot platform with multi-agent reasoning, tool calling (MCP), and GraphRAG-based retrieval, designed for millions of concurrent users.",
+                    "Built scalable data infrastructure integrating Adverity, dbt, BigQuery (OLAP), and Postgres on CloudSQL (OLTP), unifying 5TB+ of cross-platform marketing data.",
+                    "Developed OLAP pipelines using Airflow and BigQuery for real-time and scheduled analytics, enabling high-throughput data science and reporting workloads.",
+                    "Delivered production-grade models such as marketing mix modeling and revenue forecasting, driving budget optimization and ROI improvements through automated insights."
+                ]
+            },
+            {
+                role: "Data Science Consultant",
+                company: "Kauriink Pvt. Ltd.",
+                location: "New Delhi, India (Remote)",
+                date: "August 2022 - November 2022",
+                link: "https://www.techatplay.ai/",
+                bullets: [
+                    "Developed and validated deep learning models for automated player performance analysis using computer vision, achieving 87% accuracy in posture classification and 92% accuracy in shot type classification.",
+                    "Implemented advanced color segmentation and sliding window techniques to optimize object tracking in video data.",
+                    "Collaborated on transfer learning integrations using Mediapipe and YOLO to detect posture, movement, ball trajectory, and shot type accurately."
+                ]
+            }
+        ];
         
         this.init();
     }
@@ -214,34 +256,40 @@ ${bullets}
     }
 
     renderExperienceHTML(asPre = false) {
-        const content = `
-<span class="project-title">Member of Technical Staff <span style="font-weight: normal;">Zonko Labs - Mumbai, India (Onsite)</span></span>                                   <span class="project-date">April 2026 - Present</span>
-  • Building Harbor, an AI workbench and integration platform that lets agents access tools across MCP, APIs, and CLIs through a unified plugin architecture and execution layer.
-  • Designed Harbor’s CodeMode execution layer for JavaScript/TypeScript-style tool calling across complex multi-step agent tasks.
-  • Developed runtime and plugin infrastructure on Cloudflare Workers and AI Gateway, covering tool discovery, OAuth connections, secrets/policy handling, model routing, skills, and reusable workflows.
-  • Building Luffy, an AI coworker for knowledge-work teams, with persistent execution flows, workspace context, and Harbor-backed integrations.
-
-<span class="project-title">Data Scientist <span style="font-weight: normal;">New Engen - Seattle, US (Remote)</span></span>                                   <span class="project-date">November 2022 - March 2026</span>
-<a href="https://www.newengen.com/" target="_blank" class="project-link">https://www.newengen.com/</a>
-  • Architected Lift AI, a real-time distributed chatbot platform with multi-agent reasoning, tool calling, and GraphRAG-based retrieval.
-  • Built scalable data infrastructure with Adverity, dbt, BigQuery, and Postgres on CloudSQL to unify 5TB+ of marketing data.
-  • Developed OLAP pipelines using Airflow and BigQuery for real-time and scheduled analytics workloads.
-  • Delivered production models such as marketing mix modeling and revenue forecasting for budget optimization and ROI improvement.
-
-<span class="project-title">Data Science Consultant <span style="font-weight: normal;">Kauriink Pvt. Ltd. - New Delhi, India (Remote)</span></span>                                   <span class="project-date">August 2022 - November 2022</span>
-<a href="https://www.techatplay.ai/" target="_blank" class="project-link">https://www.techatplay.ai/</a>
-  • Developed and validated deep learning models for automated player performance analysis using computer vision.
-  • Implemented color segmentation and sliding window techniques to optimize object tracking in video data.
-  • Integrated transfer learning models like Mediapipe and YOLO for posture, movement, ball trajectory, and shot classification.
-`;
-
         if (asPre) {
+            const content = this.experienceData.map((item) => {
+                const header = `<span class="project-title">${item.role} <span style="font-weight: normal;">${item.company} - ${item.location}</span></span>                                   <span class="project-date">${item.date}</span>`;
+                const link = item.link ? `\n<a href="${item.link}" target="_blank" class="project-link">${item.link}</a>` : '';
+                const bullets = item.bullets.map((bullet) => `  • ${bullet}`).join('\n');
+                return `${header}${link}\n${bullets}`;
+            }).join('\n\n');
+
             return `<div class="info">Work Experience</div><pre class="terminal-projects">${content}</pre>`;
         }
 
-        return `
-            <div class="terminal-projects">${content.replaceAll('\n', '<br>')}</div>
-        `;
+        const cards = this.experienceData.map((item) => {
+            const link = item.link
+                ? `<a href="${item.link}" target="_blank" class="experience-link">${item.link}</a>`
+                : '';
+
+            return `
+                <article class="experience-card">
+                    <div class="experience-card-header">
+                        <div>
+                            <h3 class="experience-role">${item.role}</h3>
+                            <div class="experience-company">${item.company} · ${item.location}</div>
+                        </div>
+                        <div class="experience-date">${item.date}</div>
+                    </div>
+                    ${link}
+                    <ul class="experience-points">
+                        ${item.bullets.map((bullet) => `<li>${bullet}</li>`).join('')}
+                    </ul>
+                </article>
+            `;
+        }).join('');
+
+        return `<div class="experience-list">${cards}</div>`;
     }
 
     renderContactHTML() {
