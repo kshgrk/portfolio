@@ -213,6 +213,37 @@ ${bullets}
         `;
     }
 
+    renderExperienceHTML(asPre = false) {
+        const content = `
+<span class="project-title">Member of Technical Staff <span style="font-weight: normal;">Zonko Labs - Mumbai, India (Onsite)</span></span>                                   <span class="project-date">April 2026 - Present</span>
+  • Building Harbor, an AI workbench and integration platform that lets agents access tools across MCP, APIs, and CLIs through a unified plugin architecture and execution layer.
+  • Designed Harbor’s CodeMode execution layer for JavaScript/TypeScript-style tool calling across complex multi-step agent tasks.
+  • Developed runtime and plugin infrastructure on Cloudflare Workers and AI Gateway, covering tool discovery, OAuth connections, secrets/policy handling, model routing, skills, and reusable workflows.
+  • Building Luffy, an AI coworker for knowledge-work teams, with persistent execution flows, workspace context, and Harbor-backed integrations.
+
+<span class="project-title">Data Scientist <span style="font-weight: normal;">New Engen - Seattle, US (Remote)</span></span>                                   <span class="project-date">November 2022 - March 2026</span>
+<a href="https://www.newengen.com/" target="_blank" class="project-link">https://www.newengen.com/</a>
+  • Architected Lift AI, a real-time distributed chatbot platform with multi-agent reasoning, tool calling, and GraphRAG-based retrieval.
+  • Built scalable data infrastructure with Adverity, dbt, BigQuery, and Postgres on CloudSQL to unify 5TB+ of marketing data.
+  • Developed OLAP pipelines using Airflow and BigQuery for real-time and scheduled analytics workloads.
+  • Delivered production models such as marketing mix modeling and revenue forecasting for budget optimization and ROI improvement.
+
+<span class="project-title">Data Science Consultant <span style="font-weight: normal;">Kauriink Pvt. Ltd. - New Delhi, India (Remote)</span></span>                                   <span class="project-date">August 2022 - November 2022</span>
+<a href="https://www.techatplay.ai/" target="_blank" class="project-link">https://www.techatplay.ai/</a>
+  • Developed and validated deep learning models for automated player performance analysis using computer vision.
+  • Implemented color segmentation and sliding window techniques to optimize object tracking in video data.
+  • Integrated transfer learning models like Mediapipe and YOLO for posture, movement, ball trajectory, and shot classification.
+`;
+
+        if (asPre) {
+            return `<div class="info">Work Experience</div><pre class="terminal-projects">${content}</pre>`;
+        }
+
+        return `
+            <div class="terminal-projects">${content.replaceAll('\n', '<br>')}</div>
+        `;
+    }
+
     renderContactHTML() {
         return `
             <div class="contact-list">
@@ -238,10 +269,12 @@ ${bullets}
         }
 
         const aboutEl = document.getElementById('aboutSectionContent');
+        const experienceEl = document.getElementById('experienceSectionContent');
         const skillsEl = document.getElementById('skillsSectionContent');
         const projectsEl = document.getElementById('projectsSectionContent');
         const contactEl = document.getElementById('contactSectionContent');
         if (aboutEl) aboutEl.innerHTML = this.renderAboutHTML();
+        if (experienceEl) experienceEl.innerHTML = this.renderExperienceHTML(false);
         if (skillsEl) skillsEl.innerHTML = this.renderSkillsHTML();
         if (projectsEl) projectsEl.innerHTML = this.renderProjectsHTML(false);
         if (contactEl) contactEl.innerHTML = this.renderContactHTML();
@@ -415,30 +448,7 @@ ${bullets}
     }
     
     showExperience() {
-        const experienceText = `
-<div class="info">Work Experience</div>
-<pre class="terminal-projects">
-<span class="project-title">Member of Technical Staff <span style="font-weight: normal;">Zonko Labs - Mumbai, India (Onsite)</span></span>                                   <span class="project-date">April 2026 - Present</span>
-  • Building Harbor, an AI workbench and integration platform that lets agents access tools across MCP, APIs, and CLIs through a unified plugin architecture and execution layer.
-  • Designed Harbor’s CodeMode execution layer for JavaScript/TypeScript-style tool calling across complex multi-step agent tasks.
-  • Developed runtime and plugin infrastructure on Cloudflare Workers and AI Gateway, covering tool discovery, OAuth connections, secrets/policy handling, model routing, skills, and reusable workflows.
-  • Building Luffy, an AI coworker for knowledge-work teams, with persistent execution flows, workspace context, and Harbor-backed integrations.
-
-<span class="project-title">Data Scientist <span style="font-weight: normal;">New Engen - Seattle, US (Remote)</span></span>                                   <span class="project-date">November 2022 - March 2026</span>
-<a href="https://www.newengen.com/" target="_blank" class="project-link">https://www.newengen.com/</a>
-  • Architected Lift AI, a real-time distributed chatbot platform with multi-agent reasoning, tool calling, and GraphRAG-based retrieval.
-  • Built scalable data infrastructure with Adverity, dbt, BigQuery, and Postgres on CloudSQL to unify 5TB+ of marketing data.
-  • Developed OLAP pipelines using Airflow and BigQuery for real-time and scheduled analytics workloads.
-  • Delivered production models such as marketing mix modeling and revenue forecasting for budget optimization and ROI improvement.
-
-<span class="project-title">Data Science Consultant <span style="font-weight: normal;">Kauriink Pvt. Ltd. - New Delhi, India (Remote)</span></span>                                   <span class="project-date">August 2022 - November 2022</span>
-<a href="https://www.techatplay.ai/" target="_blank" class="project-link">https://www.techatplay.ai/</a>
-  • Developed and validated deep learning models for automated player performance analysis using computer vision.
-  • Implemented color segmentation and sliding window techniques to optimize object tracking in video data.
-  • Integrated transfer learning models like Mediapipe and YOLO for posture, movement, ball trajectory, and shot classification.
-</pre>
-        `;
-        this.addToOutput(experienceText);
+        this.addToOutput(this.renderExperienceHTML(true));
     }
     
     showEducation() {
